@@ -2,6 +2,7 @@ import 'package:attendme_app/common/images.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
+import 'package:attendme_app/presentation/interface/screen/login_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +64,10 @@ class _AuthScreenState extends State<AuthScreen> {
                               fontSize: 14, fontWeight: FontWeight.w300),
                         ),
                         const SizedBox(height: 32),
-                        PrimaryButton(title: 'Login', onTap: () {}),
+                        PrimaryButton(
+                          title: 'Login',
+                          onTap: () => context.push(LoginScreen.routePath),
+                        ),
                         const SizedBox(height: 12),
                         PrimaryButton(title: 'Register Company', onTap: () {}),
                       ],

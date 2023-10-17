@@ -1,5 +1,6 @@
 import 'package:attendme_app/injection.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
+import 'package:attendme_app/presentation/interface/screen/login_screen.dart';
 import 'injection.dart' as di;
 import 'package:attendme_app/presentation/interface/screen/auth_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,11 @@ class MyApp extends StatelessWidget {
             GoRoute(
               path: AuthScreen.routePath,
               builder: (context, state) => const AuthScreen(),
-            )
+            ),
+            GoRoute(
+              path: LoginScreen.routePath,
+              builder: (context, state) => const LoginScreen(),
+            ),
           ],
         ),
       ),
