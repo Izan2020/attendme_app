@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:attendme_app/data/datasources/remote_datasource.dart';
 import 'package:attendme_app/data/repository/repository_impl.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:attendme_app/domain/usecases/check_auth.dart';
@@ -14,9 +17,8 @@ Future<void> initializeDependencies() async {
 
   // Repositories
   // RegisterLazySingleton is good for Repository
-  inject.registerSingleton<Repository>(RepositoryImpl(
-    sharedPreferences: inject(),
-  ));
+  inject.registerSingleton<Repository>(
+      RepositoryImpl(sharedPreferences: inject(), remoteDataSource: inject()));
 
   // Usecases
   // RegisterLazySingleton is good for Usecases
@@ -28,5 +30,10 @@ Future<void> initializeDependencies() async {
 
   // Datasources
   // RegisterLazySingleton is good for Datasources
-  // TODO : Add Datasources
+  inject.registerLazySingleton(() => RemoteDataSourceImpl(
+        client: inject(),
+      ));
+
+  // Client
+  inject.registerSingleton(HttpClient());
 }

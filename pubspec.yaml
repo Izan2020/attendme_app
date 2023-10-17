@@ -42,6 +42,8 @@ dependencies:
   equatable: ^2.0.5
   intl: ^0.18.1
   shared_preferences: ^2.2.2
+  dartz: ^0.10.1
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:
