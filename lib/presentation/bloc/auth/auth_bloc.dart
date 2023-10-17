@@ -5,9 +5,11 @@ import 'package:bloc/bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuth checkAuth;
-  AuthBloc({required this.checkAuth}) : super(AuthState()) {
+  AuthBloc({required this.checkAuth}) : super(LoadingAS()) {
     // Check Authentication from Usecase
     on<OnCheckAuth>((event, emit) async {
+      // A little bit of delay
+      await Future.delayed(const Duration(milliseconds: 1500));
       final response = await checkAuth.execute();
       switch (response) {
         case true:

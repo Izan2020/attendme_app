@@ -1,3 +1,7 @@
-class AuthEvent {}
+class AuthEvent {
+  AuthEvent();
+}
 
-class OnCheckAuth extends AuthEvent {}
+class OnCheckAuth extends AuthEvent {
+  OnCheckAuth();
+}

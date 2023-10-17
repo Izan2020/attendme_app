@@ -9,8 +9,4 @@ class LoadingAS extends AuthState {}
 
 class SuccessAS extends AuthState {}
 
-class LoginAS extends AuthState {}
-
 class SelectAS extends AuthState {}
-
-class RegisterCompanyAS extends AuthState {}

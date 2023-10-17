@@ -3,9 +3,15 @@ import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:attendme_app/domain/usecases/check_auth.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final inject = GetIt.asNewInstance();
+
 Future<void> initializeDependencies() async {
+  // SharedPreferences
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  inject.registerSingleton<SharedPreferences>(sharedPreferences);
+
   // Repositories
   // RegisterLazySingleton is good for Repository
   inject.registerSingleton<Repository>(RepositoryImpl(
