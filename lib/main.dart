@@ -1,8 +1,10 @@
 import 'package:attendme_app/injection.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
-import 'package:attendme_app/presentation/interface/screen/login_screen.dart';
+import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
+import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
 import 'injection.dart' as di;
-import 'package:attendme_app/presentation/interface/screen/auth_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +22,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // Authentication Bloc
-        BlocProvider<AuthBloc>(create: (_) => di.inject<AuthBloc>())
+        BlocProvider<AuthBloc>(create: (_) => di.inject<AuthBloc>()),
+        // Login User Bloc
+        BlocProvider<LoginBloc>(create: (_) => di.inject<LoginBloc>())
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -35,6 +39,10 @@ class MyApp extends StatelessWidget {
             GoRoute(
               path: LoginScreen.routePath,
               builder: (context, state) => const LoginScreen(),
+            ),
+            GoRoute(
+              path: HomeScreen.routePath,
+              builder: (context, state) => const HomeScreen(),
             ),
           ],
         ),

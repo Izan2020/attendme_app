@@ -2,7 +2,8 @@ import 'package:attendme_app/common/images.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
-import 'package:attendme_app/presentation/interface/screen/login_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,11 +22,6 @@ class _AuthScreenState extends State<AuthScreen> {
   void initState() {
     context.read<AuthBloc>().add(OnCheckAuth());
 
-    final authResult = context.read<AuthBloc>().state;
-    if (authResult == SuccessAS()) {
-      context.go('/home');
-    }
-
     super.initState();
   }
 
@@ -34,6 +30,9 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       body: SafeArea(child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          if (state == SuccessAS()) {
+            Future.microtask(() => context.go(HomeScreen.routePath));
+          }
           switch (state) {
             case LoadingAS():
               return Center(
