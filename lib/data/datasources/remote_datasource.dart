@@ -38,7 +38,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         final jsonData = json.decode(response.body);
         Map<String, dynamic> firstElement = jsonData[0];
         debugPrint('Success RDS $firstElement');
-        return LoginData.fromJson(firstElement);
+        return LoginData.fromJson(firstElement.toString());
       } else {
         debugPrint('Error RDS');
         return null;

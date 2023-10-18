@@ -10,8 +10,8 @@ class InitLS extends LoginState {}
 class LoadingLS extends LoginState {}
 
 class SuccessLS extends LoginState {
-  final String message;
-  SuccessLS(this.message);
+  final String role;
+  SuccessLS(this.role);
 }
 
 class ErrorLS extends LoginState {

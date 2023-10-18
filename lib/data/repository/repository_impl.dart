@@ -1,13 +1,13 @@
 import 'dart:io';
-
 import 'package:attendme_app/common/exception.dart';
 import 'package:attendme_app/common/failure.dart';
 import 'package:attendme_app/common/strings.dart';
 import 'package:attendme_app/data/datasources/remote_datasource.dart';
+import 'package:attendme_app/data/models/login_model_response.dart';
 import 'package:attendme_app/domain/entities/login.dart';
+import 'package:attendme_app/domain/entities/user.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositoryImpl implements Repository {
@@ -30,6 +30,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<void> setLoggedOut() {
+    sharedPreferences.setString(credentialsPrefKey, '');
     return sharedPreferences.setBool(authPrefKey, false);
   }
 
@@ -38,23 +39,23 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.loginUser(user);
       if (result != null) {
-        debugPrint('Success Repository : ${result.surname}');
-
-        // Saves Company ID
-        sharedPreferences.setInt(companyIdPrefKey, result.companyId);
-        // Saves User ID
-        sharedPreferences.setInt(companyIdPrefKey, result.id);
-        return const Right('Logged In');
+        // Saves User Credentials
+        sharedPreferences.setString(credentialsPrefKey, result.toJson());
+        return Right(result.role);
       } else {
-        debugPrint('Error Repository : Not Found');
         return const Left(ServerFailure('Check your Email or Password!'));
       }
     } on ServerException {
-      debugPrint('Error Repository : Server Failure');
       return const Left(ServerFailure('Server Failure'));
     } on SocketException {
-      debugPrint('Error Repository : Connection Failure');
       return const Left(ConnectionFailure('Failed to connect to the network'));
     }
+  }
+
+  @override
+  Future<User> getLoginCredentials() async {
+    String? result = sharedPreferences.getString(credentialsPrefKey);
+    LoginData? encodedJson = LoginData.fromJson(result ?? "");
+    return encodedJson.toEntity();
   }
 }

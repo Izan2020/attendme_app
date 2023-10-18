@@ -2,6 +2,7 @@ import 'package:attendme_app/data/datasources/remote_datasource.dart';
 import 'package:attendme_app/data/repository/repository_impl.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:attendme_app/domain/usecases/check_auth.dart';
+import 'package:attendme_app/domain/usecases/get_login_credentials.dart';
 import 'package:attendme_app/domain/usecases/login_user.dart';
 import 'package:attendme_app/domain/usecases/set_loggedin.dart';
 import 'package:attendme_app/domain/usecases/set_loggedout.dart';
@@ -34,10 +35,14 @@ Future<void> initializeDependencies() async {
   inject.registerLazySingleton(() => LoginUser(inject()));
   inject.registerLazySingleton(() => SetLoggedIn(inject()));
   inject.registerLazySingleton(() => SetLoggedOut(inject()));
+  inject.registerLazySingleton(() => GetLoginCredentials(inject()));
 
   // Blocs
   // RegisterFactory is good for Blocs
-  inject.registerFactory(() => AuthBloc(checkAuth: inject()));
+  inject.registerFactory(() => AuthBloc(
+        checkAuth: inject(),
+        getLoginCredentials: inject(),
+      ));
   inject.registerFactory(
       () => LoginBloc(loginUser: inject(), setLoggedIn: inject()));
 

@@ -1,6 +1,7 @@
 import 'package:attendme_app/injection.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
+import 'package:attendme_app/presentation/interface/screen/admin/home_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
 import 'injection.dart' as di;
@@ -40,9 +41,15 @@ class MyApp extends StatelessWidget {
               path: LoginScreen.routePath,
               builder: (context, state) => const LoginScreen(),
             ),
+            // Home Default Screen
             GoRoute(
               path: HomeScreen.routePath,
               builder: (context, state) => const HomeScreen(),
+            ),
+            // Home for Admin
+            GoRoute(
+              path: HomeAdminScreen.routePath,
+              builder: (context, state) => const HomeAdminScreen(),
             ),
           ],
         ),

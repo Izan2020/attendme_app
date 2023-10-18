@@ -1,4 +1,2 @@
-const String authPrefKey = 'attendme_loginkey';
-const String companyIdPrefKey = 'attendme_companyId';
-const String userIdPrefKey = 'attendme_userId';
-const String userRolePrefKey = 'attendme_userRole';
+const String authPrefKey = '4tt3ndM34ppCr3denT14lsUs3r';
+const String credentialsPrefKey = '4tt3ndM34ppCr3denT14lsUs3rZ';
