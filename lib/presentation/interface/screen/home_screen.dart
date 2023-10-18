@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         ClipOval(
                           child: Image.network(
-                            '${state.credentials?.imageUrl}',
+                            '${data.credentials?.imageUrl}',
                             height: 50,
                             width: 50,
                             fit: BoxFit.fill,
@@ -40,14 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${state.credentials?.jobDesk}',
+                              '${data.credentials?.jobDesk}',
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
                             Text(
-                              '${state.credentials?.surName} ${state.credentials?.lastName}',
+                              '${data.credentials?.surName} ${data.credentials?.lastName}',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
