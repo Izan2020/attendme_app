@@ -18,21 +18,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       debugPrint('Loading..');
       await Future.delayed(const Duration(milliseconds: 1500));
       final response = await checkAuth.execute();
-
       switch (response) {
         case true:
-          debugPrint('Getting Credentials');
           final credentials = await getLoginCredentials.execute();
-          debugPrint('Credentials Gotten!');
-          // If you're an admin you will be stated as Admin
-          // else as Default User
-          if (credentials.role == 'admin') {
-            emit(SuccessAdminAS(credentials: credentials));
-            debugPrint('Success Admin ');
-          } else {
-            emit(SuccessDefaultAS(credentials: credentials));
-            debugPrint('Success User');
-          }
+          emit(SuccessAS(credentials: credentials));
         default:
           // If youre not you'll be stated as Unauthorized
           emit(SelectAS());

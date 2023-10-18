@@ -2,9 +2,8 @@ import 'package:attendme_app/common/images.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
-import 'package:attendme_app/presentation/interface/screen/admin/home_screen.dart';
-import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,10 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       body: SafeArea(child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state == SuccessAdminAS()) {
-            debugPrint('Success Admin TP');
-            Future.microtask(() => context.go(HomeAdminScreen.routePath));
-          } else if (state == SuccessDefaultAS()) {
+          if (state == SuccessAS()) {
             Future.microtask(() => context.go(HomeScreen.routePath));
           }
           switch (state) {

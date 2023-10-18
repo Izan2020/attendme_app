@@ -4,6 +4,7 @@ class User {
   String? jobDesk = '';
   String? surName = '';
   String? lastName = '';
+  String? imageUrl = '';
   int? companyId = 0;
   User({
     this.userId,
@@ -11,6 +12,7 @@ class User {
     this.jobDesk,
     this.surName,
     this.lastName,
+    this.imageUrl,
     this.companyId,
   });
 }

@@ -3,7 +3,7 @@ import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_state.dart';
-import 'package:attendme_app/presentation/interface/screen/admin/home_screen.dart';
+
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -119,11 +119,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ));
           break;
         case SuccessLS():
-          if (state.role == 'admin') {
-            context.go(HomeAdminScreen.routePath);
-          } else {
-            context.go(HomeScreen.routePath);
-          }
+          context.go(HomeScreen.routePath);
+          break;
       }
     });
   }

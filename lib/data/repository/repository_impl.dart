@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:attendme_app/common/exception.dart';
 import 'package:attendme_app/common/failure.dart';
@@ -40,7 +41,8 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.loginUser(user);
       if (result != null) {
         // Saves User Credentials
-        sharedPreferences.setString(credentialsPrefKey, result.toJson());
+        sharedPreferences.setString(
+            credentialsPrefKey, result.toJson().toString());
         return Right(result.role);
       } else {
         return const Left(ServerFailure('Check your Email or Password!'));
@@ -55,7 +57,7 @@ class RepositoryImpl implements Repository {
   @override
   Future<User> getLoginCredentials() async {
     String? result = sharedPreferences.getString(credentialsPrefKey);
-    LoginData? encodedJson = LoginData.fromJson(result ?? "");
+    LoginData? encodedJson = LoginData.fromJson(jsonDecode(result!));
     return encodedJson.toEntity();
   }
 }

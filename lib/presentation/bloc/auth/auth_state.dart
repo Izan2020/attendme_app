@@ -8,14 +8,9 @@ class AuthState extends Equatable {
 
 class LoadingAS extends AuthState {}
 
-class SuccessAdminAS extends AuthState {
-  User? credentials;
-  SuccessAdminAS({this.credentials});
-}
-
-class SuccessDefaultAS extends AuthState {
-  User? credentials;
-  SuccessDefaultAS({this.credentials});
+class SuccessAS extends AuthState {
+  final User? credentials;
+  SuccessAS({this.credentials});
 }
 
 class SelectAS extends AuthState {}
