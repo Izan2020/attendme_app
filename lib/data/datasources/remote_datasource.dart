@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'package:attendme_app/common/encryptor.dart';
 import 'package:attendme_app/common/exception.dart';
+import 'package:attendme_app/data/models/attendance_model_check_response.dart';
 import 'package:attendme_app/data/models/login_model_response.dart';
+import 'package:attendme_app/domain/entities/attendance.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 abstract class RemoteDataSource {
   Future<LoginData?> loginUser(Login user);
+  Future<AttendanceCheckResponse?> getAttendance(AttendanceCheck check);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -32,7 +35,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     final password = calculateSHA256(user.password);
 
     final response = await supabaseAPI(
-        'user?select=*&email=eq.$email&password=eq.$password');
+        'user?select=id,surname,last_name,role,job_desk,image_url,email,company_id&email=eq.$email&password=eq.$password');
     if (response.statusCode == 200) {
       if (response.body != '[]') {
         final jsonData = json.decode(response.body);
@@ -44,7 +47,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         return null;
       }
     } else {
-      throw ServerException();
+      throw ServerException(response.body);
+    }
+  }
+
+  @override
+  Future<AttendanceCheckResponse?> getAttendance(AttendanceCheck check) async {
+    final response = await supabaseAPI(
+        'attendance?select=*&created_at=eq.now()&company_id=eq.12&user_id=eq.1');
+    if (response.statusCode == 200) {
+      if (response.body != '[]') {
+        final jsonData = json.decode(response.body);
+        Map<String, dynamic> firstElement = jsonData[0];
+        String status = firstElement['status'];
+        String date = firstElement['created_at'];
+      }
+    } else {
+      throw ServerException(response.statusCode.toString());
     }
   }
 }

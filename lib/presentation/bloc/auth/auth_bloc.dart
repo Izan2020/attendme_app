@@ -14,17 +14,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }) : super(LoadingAS()) {
     // Check Authentication from Usecase
     on<OnCheckAuth>((event, emit) async {
+      DateTime now = DateTime.now();
       // A little bit of delay
-      debugPrint('Loading..');
       await Future.delayed(const Duration(milliseconds: 1500));
       final response = await checkAuth.execute();
       switch (response) {
         case true:
+          debugPrint('Success State');
           final credentials = await getLoginCredentials.execute();
-          emit(SuccessAS(credentials: credentials));
+          emit(SuccessAS(credentials: credentials, date: now.toLocal()));
+          break;
         default:
+          debugPrint('Select State');
           // If youre not you'll be stated as Unauthorized
           emit(SelectAS());
+          break;
       }
     });
   }

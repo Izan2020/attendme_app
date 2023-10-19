@@ -9,6 +9,7 @@ import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/domain/entities/user.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositoryImpl implements Repository {
@@ -41,14 +42,14 @@ class RepositoryImpl implements Repository {
       final result = await remoteDataSource.loginUser(user);
       if (result != null) {
         // Saves User Credentials
-        sharedPreferences.setString(
-            credentialsPrefKey, result.toJson().toString());
+        sharedPreferences.setString(credentialsPrefKey, result.toJson());
+
         return Right(result.role);
       } else {
         return const Left(ServerFailure('Check your Email or Password!'));
       }
-    } on ServerException {
-      return const Left(ServerFailure('Server Failure'));
+    } on ServerException catch (e) {
+      return Left(ServerFailure('Server Failure ${e.message}'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     }
@@ -57,7 +58,8 @@ class RepositoryImpl implements Repository {
   @override
   Future<User> getLoginCredentials() async {
     String? result = sharedPreferences.getString(credentialsPrefKey);
-    LoginData? encodedJson = LoginData.fromJson(jsonDecode(result!));
-    return encodedJson.toEntity();
+
+    LoginData? decodedJson = LoginData.fromJson(json.decode(result!));
+    return decodedJson.toEntity();
   }
 }

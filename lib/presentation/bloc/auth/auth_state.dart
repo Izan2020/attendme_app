@@ -10,7 +10,8 @@ class LoadingAS extends AuthState {}
 
 class SuccessAS extends AuthState {
   final User? credentials;
-  SuccessAS({this.credentials});
+  final DateTime? date;
+  SuccessAS({this.credentials, this.date});
 }
 
 class SelectAS extends AuthState {}

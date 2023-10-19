@@ -3,6 +3,7 @@ import 'package:attendme_app/domain/usecases/set_loggedin.dart';
 import 'package:attendme_app/presentation/bloc/login/login_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUser loginUser;

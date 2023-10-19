@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:attendme_app/domain/entities/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -30,5 +32,5 @@ class LoginData {
   factory LoginData.fromJson(Map<String, dynamic> json) =>
       _$LoginDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LoginDataToJson(this);
+  String toJson() => jsonEncode(_$LoginDataToJson(this));
 }

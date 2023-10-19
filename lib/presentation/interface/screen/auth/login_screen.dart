@@ -1,5 +1,8 @@
 import 'package:attendme_app/common/colors.dart';
 import 'package:attendme_app/domain/entities/login.dart';
+import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
+import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
+import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_state.dart';
@@ -119,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ));
           break;
         case SuccessLS():
+          Future.microtask(() => context.read<AuthBloc>().add(OnCheckAuth()));
           context.go(HomeScreen.routePath);
           break;
       }
