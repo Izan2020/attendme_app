@@ -5,7 +5,6 @@ import 'package:attendme_app/domain/usecases/check_auth.dart';
 import 'package:attendme_app/domain/usecases/get_attendance_status.dart';
 import 'package:attendme_app/domain/usecases/get_login_credentials.dart';
 import 'package:attendme_app/domain/usecases/login_user.dart';
-import 'package:attendme_app/domain/usecases/set_loggedin.dart';
 import 'package:attendme_app/domain/usecases/set_loggedout.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
@@ -36,7 +35,6 @@ Future<void> initializeDependencies() async {
   // RegisterLazySingleton is good for Usecases
   inject.registerLazySingleton(() => CheckAuth(inject()));
   inject.registerLazySingleton(() => LoginUser(inject()));
-  inject.registerLazySingleton(() => SetLoggedIn(inject()));
   inject.registerLazySingleton(() => SetLoggedOut(inject()));
   inject.registerLazySingleton(() => GetLoginCredentials(inject()));
   inject.registerLazySingleton(() => GetAttendanceStatus(inject()));
@@ -47,7 +45,6 @@ Future<void> initializeDependencies() async {
         checkAuth: inject(),
         getLoginCredentials: inject(),
         setLoggedOut: inject(),
-        setLoggedIn: inject(),
       ));
   inject.registerFactory(() => LoginBloc(
         loginUser: inject(),

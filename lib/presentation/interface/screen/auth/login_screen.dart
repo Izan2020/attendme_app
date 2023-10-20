@@ -52,11 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordField.text,
     );
     context.read<LoginBloc>().add(OnLoginUser(user: user));
-    final state = context.read<LoginBloc>().state;
-    if (state is SuccessLS) {
-      Future.microtask(() => context.read<AuthBloc>().add(OnLoggingIn()));
-      context.go(HomeScreen.routePath);
-    }
   }
 
   @override
@@ -105,7 +100,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 42,
                     ),
-                    PrimaryButton(title: 'Login', onTap: () => _loginUser())
+                    BlocBuilder<LoginBloc, LoginState>(
+                        builder: (context, state) {
+                      switch (state) {
+                        case LoadingLS():
+                          return const CircularProgressIndicator();
+                        default:
+                          return PrimaryButton(
+                              title: 'Login', onTap: () => _loginUser());
+                      }
+                    })
                   ],
                 ),
               ),
@@ -123,6 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           backgroundColor: AppColors.danger,
         ));
+      } else if (state is SuccessLS) {
+        Future.microtask(() => context.read<AuthBloc>().add(OnLoggingIn()));
+        context.go(HomeScreen.routePath);
       }
     });
   }

@@ -28,7 +28,11 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: BlocBuilder<AuthBloc, AuthState>(
+      body: SafeArea(
+          child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) =>
+            state != SuccessAS() ? context.go(AuthScreen.routePath) : null,
+        listenWhen: (previous, current) => current != SuccessAS(),
         builder: (context, state) {
           if (state == SuccessAS()) {
             Future.microtask(() => context.go(HomeScreen.routePath));

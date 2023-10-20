@@ -8,8 +8,8 @@ import 'package:dartz/dartz.dart';
 abstract class Repository {
   // Authentication
   Future<bool?> checkAuth();
-  Future<void> setLoggedIn();
-  Future<void> setLoggedOut();
+
+  Future<void> logoutUser();
   Future<Either<Failure, String>> loginUser(Login user);
   Future<User> getLoginCredentials();
   // Attendance

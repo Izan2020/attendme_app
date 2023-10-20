@@ -28,12 +28,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<void> setLoggedIn() {
-    return sharedPreferences.setBool(authPrefKey, true);
-  }
-
-  @override
-  Future<void> setLoggedOut() {
+  Future<void> logoutUser() {
     sharedPreferences.setString(credentialsPrefKey, '');
     return sharedPreferences.setBool(authPrefKey, false);
   }
@@ -45,7 +40,7 @@ class RepositoryImpl implements Repository {
       if (result != null) {
         // Saves User Credentials
         sharedPreferences.setString(credentialsPrefKey, result.toJson());
-
+        sharedPreferences.setBool(authPrefKey, true);
         return Right(result.role);
       } else {
         return const Left(ServerFailure('Check your Email or Password!'));
@@ -60,7 +55,6 @@ class RepositoryImpl implements Repository {
   @override
   Future<User> getLoginCredentials() async {
     String? result = sharedPreferences.getString(credentialsPrefKey);
-
     LoginData? decodedJson = LoginData.fromJson(json.decode(result!));
     return decodedJson.toEntity();
   }

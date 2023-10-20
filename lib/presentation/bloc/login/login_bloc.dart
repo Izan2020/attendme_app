@@ -11,7 +11,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) : super(InitLS()) {
     on<OnLoginUser>((event, emit) async {
       emit(LoadingLS());
-
       final result = await loginUser.execute(event.user);
       result.fold(
         (failure) {

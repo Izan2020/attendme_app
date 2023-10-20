@@ -1,6 +1,5 @@
 import 'package:attendme_app/domain/usecases/check_auth.dart';
 import 'package:attendme_app/domain/usecases/get_login_credentials.dart';
-import 'package:attendme_app/domain/usecases/set_loggedin.dart';
 import 'package:attendme_app/domain/usecases/set_loggedout.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
@@ -11,12 +10,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuth checkAuth;
   final GetLoginCredentials getLoginCredentials;
   final SetLoggedOut setLoggedOut;
-  final SetLoggedIn setLoggedIn;
+
   AuthBloc({
     required this.checkAuth,
     required this.getLoginCredentials,
     required this.setLoggedOut,
-    required this.setLoggedIn,
   }) : super(LoadingAS()) {
     // Check Authentication from Usecase
     on<OnCheckAuth>((event, emit) async {
@@ -41,9 +39,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(UnauthorizedAS());
     });
     on<OnLoggingIn>((event, emit) async {
-      setLoggedIn.execute();
       final credentials = await getLoginCredentials.execute();
       emit(SuccessAS(credentials: credentials));
+      debugPrint(credentials.surName);
     });
   }
 }

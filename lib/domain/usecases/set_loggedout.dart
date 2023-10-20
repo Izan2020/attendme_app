@@ -5,6 +5,6 @@ class SetLoggedOut {
   SetLoggedOut(this.repository);
 
   Future<void> execute() {
-    return repository.setLoggedOut();
+    return repository.logoutUser();
   }
 }
