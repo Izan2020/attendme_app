@@ -4,12 +4,14 @@ import 'package:attendme_app/common/exception.dart';
 import 'package:attendme_app/common/failure.dart';
 import 'package:attendme_app/common/strings.dart';
 import 'package:attendme_app/data/datasources/remote_datasource.dart';
+
 import 'package:attendme_app/data/models/login_model_response.dart';
+import 'package:attendme_app/domain/entities/attendance_params.dart';
+import 'package:attendme_app/domain/entities/attendance_status.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/domain/entities/user.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositoryImpl implements Repository {
@@ -61,5 +63,18 @@ class RepositoryImpl implements Repository {
 
     LoginData? decodedJson = LoginData.fromJson(json.decode(result!));
     return decodedJson.toEntity();
+  }
+
+  @override
+  Future<Either<Failure, AttendanceStatus>> getAttendanceStatus(
+      AttendanceParams params) async {
+    try {
+      final result = await remoteDataSource.getAttendance(params);
+      return Right(result.toEntity());
+    } on ServerException catch (e) {
+      return Left(ServerFailure('Server Failure ${e.message}'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
   }
 }

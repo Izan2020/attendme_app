@@ -3,14 +3,14 @@ import 'package:attendme_app/common/encryptor.dart';
 import 'package:attendme_app/common/exception.dart';
 import 'package:attendme_app/data/models/attendance_model_check_response.dart';
 import 'package:attendme_app/data/models/login_model_response.dart';
-import 'package:attendme_app/domain/entities/attendance.dart';
+import 'package:attendme_app/domain/entities/attendance_params.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 abstract class RemoteDataSource {
   Future<LoginData?> loginUser(Login user);
-  Future<AttendanceCheckResponse?> getAttendance(AttendanceCheck check);
+  Future<AttendanceCheckResponse> getAttendance(AttendanceParams check);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -25,7 +25,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       Uri.parse('$baseUrl/$url'),
       headers: {"apiKey": apiKey},
     );
-
     return response;
   }
 
@@ -47,23 +46,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         return null;
       }
     } else {
-      throw ServerException(response.body);
+      throw ServerException('${response.statusCode}');
     }
   }
 
   @override
-  Future<AttendanceCheckResponse?> getAttendance(AttendanceCheck check) async {
+  Future<AttendanceCheckResponse> getAttendance(AttendanceParams check) async {
     final response = await supabaseAPI(
-        'attendance?select=*&created_at=eq.now()&company_id=eq.12&user_id=eq.1');
+        'attendance?select=*&created_at=eq.${check.date}&company_id=eq.${check.companyId}&user_id=eq.${check.userId}');
     if (response.statusCode == 200) {
       if (response.body != '[]') {
         final jsonData = json.decode(response.body);
         Map<String, dynamic> firstElement = jsonData[0];
-        String status = firstElement['status'];
-        String date = firstElement['created_at'];
+        return AttendanceCheckResponse.fromJson(firstElement);
+      } else {
+        return const AttendanceCheckResponse(status: 'un-attended');
       }
     } else {
-      throw ServerException(response.statusCode.toString());
+      debugPrint('Response Attendance Check ${response.body}');
+      throw ServerException('${response.statusCode}');
     }
   }
 }

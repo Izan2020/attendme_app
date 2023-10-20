@@ -38,7 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
               return Center(
                 child: Image.asset(AppImages.iconSplashScreen),
               );
-            case SelectAS():
+            case UnauthorizedAS():
               return Center(
                 child: SingleChildScrollView(
                   child: Container(

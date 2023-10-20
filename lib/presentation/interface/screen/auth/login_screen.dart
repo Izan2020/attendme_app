@@ -2,7 +2,6 @@ import 'package:attendme_app/common/colors.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
-import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_state.dart';
@@ -53,6 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordField.text,
     );
     context.read<LoginBloc>().add(OnLoginUser(user: user));
+    final state = context.read<LoginBloc>().state;
+    if (state is SuccessLS) {
+      Future.microtask(() => context.read<AuthBloc>().add(OnLoggingIn()));
+      context.go(HomeScreen.routePath);
+    }
   }
 
   @override
@@ -111,20 +115,14 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }, listener: (context, state) {
       final scaffoldMessenger = ScaffoldMessenger.of(context);
-      switch (state) {
-        case ErrorLS():
-          scaffoldMessenger.showSnackBar(SnackBar(
-            content: Text(
-              state.message,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            backgroundColor: AppColors.danger,
-          ));
-          break;
-        case SuccessLS():
-          Future.microtask(() => context.read<AuthBloc>().add(OnCheckAuth()));
-          context.go(HomeScreen.routePath);
-          break;
+      if (state is ErrorLS) {
+        scaffoldMessenger.showSnackBar(SnackBar(
+          content: Text(
+            state.message,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          backgroundColor: AppColors.danger,
+        ));
       }
     });
   }

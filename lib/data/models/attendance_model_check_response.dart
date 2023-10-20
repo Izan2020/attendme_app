@@ -1,8 +1,39 @@
+import 'dart:convert';
+
+import 'package:attendme_app/domain/entities/attendance_status.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'attendance_model_check_response.g.dart';
+
 @JsonSerializable()
-class AttendanceCheckResponse {
-  final String status;
+class AttendanceCheckResponse extends Equatable {
+  final String? status;
+  final String? reason;
   final String? createdAt;
-  AttendanceCheckResponse({required this.status, this.createdAt});
+  final int? attendanceId;
+  const AttendanceCheckResponse(
+      {this.status, this.createdAt, this.reason, this.attendanceId});
+
+  AttendanceStatus toEntity() {
+    return AttendanceStatus(
+      status,
+      createdAt,
+      attendanceId,
+      reason,
+    );
+  }
+
+  factory AttendanceCheckResponse.fromJson(Map<String, dynamic> json) =>
+      _$AttendanceCheckResponseFromJson(json);
+
+  String toJson() => jsonEncode(_$AttendanceCheckResponseToJson(this));
+
+  @override
+  List<Object?> get props => [
+        status,
+        createdAt,
+        reason,
+        attendanceId,
+      ];
 }
