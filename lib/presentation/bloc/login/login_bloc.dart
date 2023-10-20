@@ -1,5 +1,4 @@
 import 'package:attendme_app/domain/usecases/login_user.dart';
-import 'package:attendme_app/domain/usecases/set_loggedin.dart';
 import 'package:attendme_app/presentation/bloc/login/login_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_state.dart';
 import 'package:bloc/bloc.dart';
