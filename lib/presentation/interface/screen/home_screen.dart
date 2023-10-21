@@ -244,11 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getAttendanceByCalendar(DateTime date) async {
-    // debugPrint('Parameter $date');
-    // debugPrint('Actual ${DateTime.now()}');
-    // if (date.day == DateTime.now().day) {
-    //   return context.read<CurrentDateBloc>().add(OnGetTodaysDate());
-    // }
     context.read<CurrentDateBloc>().add(OnUpdateDate(date));
     final userState = context.read<AuthBloc>().state as SuccessAS;
     final params = CheckAttendanceParams(

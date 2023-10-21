@@ -22,7 +22,6 @@ class CurrentDateBloc extends Bloc<CurrentDateEvent, CurrentDateState> {
       },
     );
     on<OnGetTodaysDate>((event, emit) {
-      debugPrint(DateTime.now().toString());
       emit(TodaysDateCDS(date: DateTime.now()));
     });
   }
