@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               context
                                   .read<CurrentDateBloc>()
                                   .add(OnGetTodaysDate());
-                              getAttendanceStatus();
+                              Future.microtask(() => getAttendanceStatus());
                             },
                             icon: Icon(
                               Icons.arrow_back,

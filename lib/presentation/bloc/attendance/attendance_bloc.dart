@@ -10,7 +10,6 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     on<OnGetAttendanceStatus>((event, emit) async {
       emit(LoadingATS());
       await Future.delayed(const Duration(milliseconds: 1500));
-
       final result = await getAttendanceStatus.execute(event.params);
       result.fold(
         (failure) {

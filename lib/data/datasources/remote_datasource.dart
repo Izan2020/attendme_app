@@ -61,14 +61,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final currentDate = DateTime.now();
       final paramsDate = check.date;
 
-      if (paramsDate!.isAfter(currentDate)) {
-        return const AttendanceCheckResponse(status: 'future-date');
-      }
-
       // Validate Weeknd
       if (dayWeeknd == 'Sat' || dayWeeknd == 'Sun') {
         return const AttendanceCheckResponse(status: 'week-end');
       }
+
+      if (paramsDate!.isAfter(currentDate)) {
+        return const AttendanceCheckResponse(status: 'future-date');
+      }
+
       if (response.body != '[]') {
         final jsonData = json.decode(response.body);
         Map<String, dynamic> firstElement = jsonData[0];
