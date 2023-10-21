@@ -6,7 +6,7 @@ import 'package:attendme_app/common/strings.dart';
 import 'package:attendme_app/data/datasources/remote_datasource.dart';
 
 import 'package:attendme_app/data/models/login_model_response.dart';
-import 'package:attendme_app/domain/entities/attendance_params.dart';
+import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/attendance_status.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/domain/entities/user.dart';
@@ -61,7 +61,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, AttendanceStatus>> getAttendanceStatus(
-      AttendanceParams params) async {
+      CheckAttendanceParams params) async {
     try {
       final result = await remoteDataSource.getAttendance(params);
       return Right(result.toEntity());

@@ -20,19 +20,15 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
+    debugPrint('Baru Masuk Auth');
     context.read<AuthBloc>().add(OnCheckAuth());
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) =>
-            state != SuccessAS() ? context.go(AuthScreen.routePath) : null,
-        listenWhen: (previous, current) => current != SuccessAS(),
+      body: SafeArea(child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state == SuccessAS()) {
             Future.microtask(() => context.go(HomeScreen.routePath));

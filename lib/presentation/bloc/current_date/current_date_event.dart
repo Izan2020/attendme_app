@@ -7,6 +7,6 @@ class OnGetTodaysDate extends CurrentDateEvent {
 }
 
 class OnUpdateDate extends CurrentDateEvent {
-  final DateTime dateTime;
+  DateTime dateTime;
   OnUpdateDate(this.dateTime);
 }

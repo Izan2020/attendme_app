@@ -28,7 +28,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SettingsItem(
               title: 'Logout',
               onTap: () async {
-                context.read<AuthBloc>().add(OnLogout());
+                Future.microtask(
+                    () => context.read<AuthBloc>().add(OnLogout()));
                 context.go(AuthScreen.routePath);
               })
         ],

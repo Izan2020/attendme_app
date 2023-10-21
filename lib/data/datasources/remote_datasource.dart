@@ -3,14 +3,14 @@ import 'package:attendme_app/common/encryptor.dart';
 import 'package:attendme_app/common/exception.dart';
 import 'package:attendme_app/data/models/attendance_model_check_response.dart';
 import 'package:attendme_app/data/models/login_model_response.dart';
-import 'package:attendme_app/domain/entities/attendance_params.dart';
+import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 abstract class RemoteDataSource {
   Future<LoginData?> loginUser(Login user);
-  Future<AttendanceCheckResponse> getAttendance(AttendanceParams check);
+  Future<AttendanceCheckResponse> getAttendance(CheckAttendanceParams check);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -51,7 +51,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<AttendanceCheckResponse> getAttendance(AttendanceParams check) async {
+  Future<AttendanceCheckResponse> getAttendance(
+      CheckAttendanceParams check) async {
     final response = await supabaseAPI(
         'attendance?select=*&created_at=eq.${check.date}&company_id=eq.${check.companyId}&user_id=eq.${check.userId}');
     if (response.statusCode == 200) {

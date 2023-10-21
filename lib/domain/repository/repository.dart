@@ -1,5 +1,5 @@
 import 'package:attendme_app/common/failure.dart';
-import 'package:attendme_app/domain/entities/attendance_params.dart';
+import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/attendance_status.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/domain/entities/user.dart';
@@ -14,5 +14,5 @@ abstract class Repository {
   Future<User> getLoginCredentials();
   // Attendance
   Future<Either<Failure, AttendanceStatus>> getAttendanceStatus(
-      AttendanceParams params);
+      CheckAttendanceParams params);
 }

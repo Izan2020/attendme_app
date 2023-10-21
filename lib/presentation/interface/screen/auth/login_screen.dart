@@ -129,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
       } else if (state is SuccessLS) {
         Future.microtask(() => context.read<AuthBloc>().add(OnLoggingIn()));
+        // context.read<LoginBloc>().close();
         context.go(HomeScreen.routePath);
       }
     });

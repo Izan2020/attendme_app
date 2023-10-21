@@ -1,20 +1,18 @@
-import 'package:attendme_app/domain/entities/attendance_params.dart';
+import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 
 class AttendanceEvent {
   AttendanceEvent();
 }
 
 class OnGetAttendanceStatus extends AttendanceEvent {
-  final AttendanceParams params;
+  final CheckAttendanceParams params;
   OnGetAttendanceStatus(this.params);
 }
 
 class OnGetAttendanceStatusByCalendar extends AttendanceEvent {
-  final AttendanceParams params;
+  final CheckAttendanceParams params;
   OnGetAttendanceStatusByCalendar(this.params);
 }
-
-class OnRefreshAttendanceStatus extends AttendanceEvent {}
 
 class OnAttending extends AttendanceEvent {}
 

@@ -1,3 +1,4 @@
+import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/domain/usecases/get_attendance_status.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
@@ -35,7 +36,6 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           }
         },
       );
-      debugPrint(state.toString());
     });
   }
 }

@@ -4,7 +4,6 @@ import 'package:attendme_app/domain/usecases/set_loggedout.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuth checkAuth;
@@ -23,12 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final result = await checkAuth.execute();
       switch (result) {
         case true:
-          debugPrint('Success State');
           final credentials = await getLoginCredentials.execute();
           emit(SuccessAS(credentials: credentials));
           break;
         default:
-          debugPrint('Select State');
           // If youre not you'll be stated as Unauthorized
           emit(UnauthorizedAS());
           break;
@@ -41,7 +38,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<OnLoggingIn>((event, emit) async {
       final credentials = await getLoginCredentials.execute();
       emit(SuccessAS(credentials: credentials));
-      debugPrint(credentials.surName);
     });
   }
 }

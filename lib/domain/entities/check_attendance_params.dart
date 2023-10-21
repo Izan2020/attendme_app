@@ -1,8 +1,8 @@
-class AttendanceParams {
-  String? date;
+class CheckAttendanceParams {
+  DateTime? date;
   int? userId;
   int? companyId;
-  AttendanceParams({
+  CheckAttendanceParams({
     required this.date,
     required this.userId,
     required this.companyId,

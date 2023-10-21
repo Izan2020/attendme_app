@@ -7,6 +7,8 @@ class CurrentDateState extends Equatable {
   get date => null;
 }
 
+class InitCDS extends CurrentDateState {}
+
 class CalendarDateCDS extends CurrentDateState {
   @override
   final DateTime? date;
