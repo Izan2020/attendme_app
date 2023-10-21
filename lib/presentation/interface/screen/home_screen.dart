@@ -124,6 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           BlocBuilder<AttendanceBloc, AttendanceState>(
                             builder: (context, state) => CardAttend(
                               onTap: () async {
+                                final currentDate =
+                                    context.read<CurrentDateBloc>().state;
+                                if (currentDate is CalendarDateCDS) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('The date isnt Today!')));
+                                }
                                 switch (state) {
                                   case ErrorATS():
                                     getAttendanceStatus();
@@ -236,6 +244,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getAttendanceByCalendar(DateTime date) async {
+    // debugPrint('Parameter $date');
+    // debugPrint('Actual ${DateTime.now()}');
+    // if (date.day == DateTime.now().day) {
+    //   return context.read<CurrentDateBloc>().add(OnGetTodaysDate());
+    // }
     context.read<CurrentDateBloc>().add(OnUpdateDate(date));
     final userState = context.read<AuthBloc>().state as SuccessAS;
     final params = CheckAttendanceParams(
