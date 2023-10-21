@@ -126,6 +126,14 @@ class _CardAttendState extends State<CardAttend> {
               AppColors.warning,
             );
             break;
+          case WeekendATS():
+            cardAttendData = CardAttendData(
+              'Its Weekend Day',
+              'Nothing to do!',
+              Icons.weekend,
+              AppColors.warning,
+            );
+            break;
           case CheckedoutATS():
             cardAttendData = CardAttendData(
               'Nothing to Do',

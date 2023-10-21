@@ -42,10 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<CurrentDateBloc>().add(OnUpdateDate(date));
     final userState = context.read<AuthBloc>().state as SuccessAS;
     final dateBloc = context.read<CurrentDateBloc>().state.date;
-    debugPrint(
-        'Home OnTap ${simpleDateString(date)} > ${simpleDateString(dateBloc)}');
     final params = CheckAttendanceParams(
-      date: date,
+      date: dateBloc,
       userId: userState.credentials?.userId ?? 0,
       companyId: userState.credentials?.companyId ?? 0,
     );
@@ -132,7 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         margin: const EdgeInsets.all(11),
                         child: Text(
-                          simpleDateString(state.date),
+                          simpleDateString(
+                              value: state.date, format: 'dd, MMMM yyyy'),
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w300,

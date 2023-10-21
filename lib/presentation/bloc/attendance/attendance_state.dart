@@ -7,6 +7,8 @@ class AttendanceState extends Equatable {
 
 class InitATS extends AttendanceState {}
 
+class WeekendATS extends AttendanceState {}
+
 class LoadingATS extends AttendanceState {}
 
 class ErrorATS extends AttendanceState {

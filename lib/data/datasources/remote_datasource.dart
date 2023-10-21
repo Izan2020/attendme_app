@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:attendme_app/common/encryptor.dart';
 import 'package:attendme_app/common/exception.dart';
+import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/data/models/attendance_model_check_response.dart';
 import 'package:attendme_app/data/models/login_model_response.dart';
 import 'package:attendme_app/domain/entities/check_attendance_params.dart';
@@ -53,6 +54,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<AttendanceCheckResponse> getAttendance(
       CheckAttendanceParams check) async {
+    final day = simpleDateString(value: check.date!, format: 'E');
+
+    if (day == 'Sat' || day == 'Sun') {
+      return const AttendanceCheckResponse(status: 'week-end');
+    }
+
     final response = await supabaseAPI(
         'attendance?select=*&created_at=eq.${check.date}&company_id=eq.${check.companyId}&user_id=eq.${check.userId}');
     if (response.statusCode == 200) {
