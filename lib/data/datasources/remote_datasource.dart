@@ -11,7 +11,7 @@ import 'package:http/http.dart';
 
 abstract class RemoteDataSource {
   Future<LoginData?> loginUser(Login user);
-  Future<AttendanceCheckResponse> getAttendance(CheckAttendanceParams check);
+  Future<AttendanceCheckResponse?> getAttendance(CheckAttendanceParams check);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -52,27 +52,34 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<AttendanceCheckResponse> getAttendance(
+  Future<AttendanceCheckResponse?> getAttendance(
       CheckAttendanceParams check) async {
-    final day = simpleDateString(value: check.date!, format: 'E');
-
-    if (day == 'Sat' || day == 'Sun') {
-      return const AttendanceCheckResponse(status: 'week-end');
-    }
-
     final response = await supabaseAPI(
         'attendance?select=*&created_at=eq.${check.date}&company_id=eq.${check.companyId}&user_id=eq.${check.userId}');
     if (response.statusCode == 200) {
+      final dayWeeknd = simpleDateTime(value: check.date!, format: 'E');
+      final currentDate = DateTime.now();
+      final paramsDate = check.date;
+
+      if (paramsDate!.isAfter(currentDate)) {
+        return const AttendanceCheckResponse(status: 'future-date');
+      }
+
+      // Validate Weeknd
+      if (dayWeeknd == 'Sat' || dayWeeknd == 'Sun') {
+        return const AttendanceCheckResponse(status: 'week-end');
+      }
       if (response.body != '[]') {
         final jsonData = json.decode(response.body);
         Map<String, dynamic> firstElement = jsonData[0];
         return AttendanceCheckResponse.fromJson(firstElement);
-      } else {
+      } else if (paramsDate.isBefore(currentDate) || response.body == '[]') {
         return const AttendanceCheckResponse(status: 'un-attended');
       }
     } else {
       debugPrint('Response Attendance Check ${response.body}');
       throw ServerException('${response.statusCode}');
     }
+    return null;
   }
 }

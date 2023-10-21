@@ -10,6 +10,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     on<OnGetAttendanceStatus>((event, emit) async {
       emit(LoadingATS());
       await Future.delayed(const Duration(milliseconds: 1500));
+
       final result = await getAttendanceStatus.execute(event.params);
       result.fold(
         (failure) {
@@ -19,7 +20,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           switch (result.status) {
             case 'attended':
               emit(AttendedATS(
-                result.dateAttachment,
+                DateTime.parse(result.dateAttachment!),
                 result.attendanceId,
               ));
               break;
@@ -33,6 +34,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
               emit(CheckedoutATS());
             case 'week-end':
               emit(WeekendATS());
+            case 'future-date':
+              emit(FutureDateATS());
           }
         },
       );

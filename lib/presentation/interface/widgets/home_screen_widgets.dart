@@ -1,4 +1,5 @@
 import 'package:attendme_app/common/colors.dart';
+import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/domain/entities/user.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
@@ -96,23 +97,23 @@ class _CardAttendState extends State<CardAttend> {
         switch (state) {
           case AttendedATS():
             cardAttendData = CardAttendData(
-              'Youre Attended',
-              state.timeAttended ?? "Unknown Time",
+              'Youre Attended.',
+              simpleDateTime(value: state.timeAttended!, format: 'hh:mm a'),
               Icons.check,
               AppColors.success,
             );
             break;
           case UnattendedATS():
             cardAttendData = CardAttendData(
-              'Youre not Attended',
-              'Attend Me!',
+              'Youre not Attended.',
+              'Not Attended',
               Icons.warning,
               AppColors.warning,
             );
             break;
           case AbsentedATS():
             cardAttendData = CardAttendData(
-              'Youre not Attending',
+              'Youre not Attending.',
               'Absent',
               Icons.cancel,
               AppColors.warning,
@@ -140,6 +141,14 @@ class _CardAttendState extends State<CardAttend> {
               'Checked Out',
               Icons.done_all,
               AppColors.success,
+            );
+            break;
+          case FutureDateATS():
+            cardAttendData = CardAttendData(
+              'Attend this in the Future',
+              'Attend this Soon',
+              Icons.work_history,
+              AppColors.warning,
             );
             break;
         }

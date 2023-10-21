@@ -7,6 +7,8 @@ class AttendanceState extends Equatable {
 
 class InitATS extends AttendanceState {}
 
+class FutureDateATS extends AttendanceState {}
+
 class WeekendATS extends AttendanceState {}
 
 class LoadingATS extends AttendanceState {}
@@ -19,7 +21,7 @@ class ErrorATS extends AttendanceState {
 class UnattendedATS extends AttendanceState {}
 
 class AttendedATS extends AttendanceState {
-  final String? timeAttended;
+  final DateTime? timeAttended;
   final int? attendanceId;
   AttendedATS(this.timeAttended, this.attendanceId);
 }

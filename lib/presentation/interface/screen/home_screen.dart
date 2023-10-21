@@ -10,6 +10,7 @@ import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.da
 import 'package:attendme_app/presentation/bloc/current_date/current_date_event.dart';
 import 'package:attendme_app/presentation/bloc/current_date/current_date_state.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
+import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
@@ -25,42 +26,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<void> getAttendanceStatus() async {
-    final userState = context.read<AuthBloc>().state as SuccessAS;
-    final dateState = context.read<CurrentDateBloc>().state;
-
-    final attendanceParams = CheckAttendanceParams(
-        date: dateState.date,
-        userId: userState.credentials?.userId ?? 0,
-        companyId: userState.credentials?.companyId ?? 0);
-    return context
-        .read<AttendanceBloc>()
-        .add(OnGetAttendanceStatus(attendanceParams));
-  }
-
-  Future<void> getAttendanceByCalendar(DateTime date) async {
-    context.read<CurrentDateBloc>().add(OnUpdateDate(date));
-    final userState = context.read<AuthBloc>().state as SuccessAS;
-    final dateBloc = context.read<CurrentDateBloc>().state.date;
-    final params = CheckAttendanceParams(
-      date: dateBloc,
-      userId: userState.credentials?.userId ?? 0,
-      companyId: userState.credentials?.companyId ?? 0,
-    );
-
-    return context.read<AttendanceBloc>().add(OnGetAttendanceStatus(params));
-  }
-
-  Future<void> validateCurrentDate() async {
-    final dateState = context.read<CurrentDateBloc>().state;
-    if (dateState is CalendarDateCDS) {
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-      scaffoldMessenger
-          .showSnackBar(const SnackBar(content: Text('This is Yesterday')));
-      return;
-    }
-  }
-
   @override
   void initState() {
     debugPrint('Baru Masuk Home');
@@ -120,9 +85,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       else if (state is CalendarDateCDS)
                         IconButton(
-                            onPressed: () => context
-                                .read<CurrentDateBloc>()
-                                .add(OnGetTodaysDate()),
+                            onPressed: () {
+                              context
+                                  .read<CurrentDateBloc>()
+                                  .add(OnGetTodaysDate());
+                              getAttendanceStatus();
+                            },
                             icon: Icon(
                               Icons.arrow_back,
                               color: AppColors.primaryColor,
@@ -130,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         margin: const EdgeInsets.all(11),
                         child: Text(
-                          simpleDateString(
+                          simpleDateTime(
                               value: state.date, format: 'dd, MMMM yyyy'),
                           style: TextStyle(
                               fontSize: 18,
@@ -156,13 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           BlocBuilder<AttendanceBloc, AttendanceState>(
                             builder: (context, state) => CardAttend(
                               onTap: () async {
-                                await validateCurrentDate();
                                 switch (state) {
                                   case ErrorATS():
                                     getAttendanceStatus();
                                     break;
                                   case UnattendedATS():
-                                    // Handle the UnattendedATS state
+                                    showAttendBottomsheet(context);
                                     break;
 
                                   case AttendedATS():
@@ -202,5 +169,81 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
     );
+  }
+
+  Future<void> showAttendBottomsheet(BuildContext context) async {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(12),
+                  child: Column(children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Attend',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.close_sharp),
+                          )
+                        ]),
+                    const Divider(),
+                    const SizedBox(height: 12),
+                    AttendanceButton(
+                      title: 'Check-In',
+                      onTap: () {},
+                      type: AttendanceButtonType.checkIn,
+                    ),
+                    const SizedBox(height: 12),
+                    AttendanceButton(
+                      title: 'Absent',
+                      onTap: () {},
+                      type: AttendanceButtonType.absent,
+                    ),
+                    const SizedBox(height: 22),
+                  ]),
+                )
+              ],
+            ),
+          );
+        });
+    return;
+  }
+
+  Future<void> getAttendanceStatus() async {
+    final userState = context.read<AuthBloc>().state as SuccessAS;
+    final dateState = context.read<CurrentDateBloc>().state;
+
+    final attendanceParams = CheckAttendanceParams(
+        date: dateState.date,
+        userId: userState.credentials?.userId ?? 0,
+        companyId: userState.credentials?.companyId ?? 0);
+    return context
+        .read<AttendanceBloc>()
+        .add(OnGetAttendanceStatus(attendanceParams));
+  }
+
+  Future<void> getAttendanceByCalendar(DateTime date) async {
+    context.read<CurrentDateBloc>().add(OnUpdateDate(date));
+    final userState = context.read<AuthBloc>().state as SuccessAS;
+    final params = CheckAttendanceParams(
+      date: date,
+      userId: userState.credentials?.userId ?? 0,
+      companyId: userState.credentials?.companyId ?? 0,
+    );
+
+    return context.read<AttendanceBloc>().add(OnGetAttendanceStatus(params));
   }
 }

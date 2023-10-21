@@ -64,7 +64,7 @@ class RepositoryImpl implements Repository {
       CheckAttendanceParams params) async {
     try {
       final result = await remoteDataSource.getAttendance(params);
-      return Right(result.toEntity());
+      return Right(result!.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure('Server Failure ${e.message}'));
     } on SocketException {
