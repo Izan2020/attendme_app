@@ -49,6 +49,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return context.read<AttendanceBloc>().add(OnGetAttendanceStatus(params));
   }
 
+  Future<void> validateCurrentDate() async {
+    final dateState = context.read<CurrentDateBloc>().state;
+    if (dateState is CalendarDateCDS) {
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      scaffoldMessenger
+          .showSnackBar(const SnackBar(content: Text('This is Yesterday')));
+      return;
+    }
+  }
+
   @override
   void initState() {
     getAttendanceStatus();
@@ -179,7 +189,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           BlocBuilder<AttendanceBloc, AttendanceState>(
                             builder: (context, state) => CardAttend(
-                              onTap: () {
+                              onTap: () async {
+                                await validateCurrentDate();
                                 switch (state) {
                                   case ErrorATS():
                                     getAttendanceStatus();
