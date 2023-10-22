@@ -1,4 +1,5 @@
 import 'package:attendme_app/common/colors.dart';
+import 'package:attendme_app/common/snackbars.dart';
 import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.da
 import 'package:attendme_app/presentation/bloc/current_date/current_date_event.dart';
 import 'package:attendme_app/presentation/bloc/current_date/current_date_state.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
-import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
@@ -124,14 +124,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           BlocBuilder<AttendanceBloc, AttendanceState>(
                             builder: (context, state) => CardAttend(
                               onTap: () async {
-                                final currentDate =
-                                    context.read<CurrentDateBloc>().state;
-                                if (currentDate is CalendarDateCDS) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('The date isnt Today!')));
-                                }
+                                // final currentDate =
+                                //     context.read<CurrentDateBloc>().state;
+
+                                if (state is LoadingATS) return;
+
                                 switch (state) {
                                   case ErrorATS():
                                     getAttendanceStatus();
@@ -155,7 +152,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                     break;
 
                                   case CheckedoutATS():
-                                    // Handle the CheckedoutATS state
+                                    AppSnackbar.danger(
+                                        context: context,
+                                        text: "You're checked-out");
+                                    break;
+
+                                  case WeekendATS():
+                                    AppSnackbar.warning(
+                                        context: context,
+                                        text: "It's Weekend Day!");
+                                    break;
+                                  case FutureDateATS():
+                                    AppSnackbar.warning(
+                                        context: context, text: "Attend Soon");
                                     break;
 
                                   default:
@@ -183,49 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return SizedBox(
-            width: double.maxFinite,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(12),
-                  child: Column(children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Attend',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            icon: const Icon(Icons.close_sharp),
-                          )
-                        ]),
-                    const Divider(),
-                    const SizedBox(height: 12),
-                    AttendanceButton(
-                      title: 'Check-In',
-                      onTap: () {},
-                      type: AttendanceButtonType.checkIn,
-                    ),
-                    const SizedBox(height: 12),
-                    AttendanceButton(
-                      title: 'Absent',
-                      onTap: () {},
-                      type: AttendanceButtonType.absent,
-                    ),
-                    const SizedBox(height: 22),
-                  ]),
-                )
-              ],
-            ),
-          );
+          return const BottomSheetAttend();
         });
     return;
   }

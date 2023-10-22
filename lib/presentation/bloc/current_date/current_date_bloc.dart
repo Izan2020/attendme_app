@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class CurrentDateBloc extends Bloc<CurrentDateEvent, CurrentDateState> {
-  CurrentDateBloc() : super(TodaysDateCDS(date: DateTime.now())) {
+  CurrentDateBloc() : super(TodaysDateCDS()) {
     on<OnUpdateDate>(
       (event, emit) async {
         DateTime now = DateTime.now();
@@ -13,7 +13,7 @@ class CurrentDateBloc extends Bloc<CurrentDateEvent, CurrentDateState> {
         String formattedDateTime = customFormat.format(now);
 
         if (event.dateTime.toString() == formattedDateTime) {
-          emit(TodaysDateCDS(date: DateTime.now()));
+          emit(TodaysDateCDS());
           return;
         }
         debugPrint('Event ${event.dateTime}');
@@ -22,7 +22,7 @@ class CurrentDateBloc extends Bloc<CurrentDateEvent, CurrentDateState> {
       },
     );
     on<OnGetTodaysDate>((event, emit) {
-      emit(TodaysDateCDS(date: DateTime.now()));
+      emit(TodaysDateCDS());
     });
   }
 }

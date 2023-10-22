@@ -1,11 +1,10 @@
-import 'package:attendme_app/common/colors.dart';
+import 'package:attendme_app/common/snackbars.dart';
 import 'package:attendme_app/domain/entities/login.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_event.dart';
 import 'package:attendme_app/presentation/bloc/login/login_state.dart';
-
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const routePath = '/login_screen';
+  static const routePath = '/login-screen';
   const LoginScreen({super.key});
 
   @override
@@ -26,25 +25,12 @@ class _LoginScreenState extends State<LoginScreen> {
   double _opacityLogin = 0;
 
   _loginUser() async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
     if (_emailField.text == '') {
-      scaffoldMessenger.showSnackBar(SnackBar(
-        content: const Text(
-          'Fill your Email!',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: AppColors.danger,
-      ));
+      AppSnackbar.danger(context: context, text: 'Fill your Email.');
       return;
     }
     if (_passwordField.text == '') {
-      scaffoldMessenger.showSnackBar(SnackBar(
-        content: const Text(
-          'Fill your Password!',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: AppColors.danger,
-      ));
+      AppSnackbar.danger(context: context, text: 'Fill your Password.');
       return;
     }
     final user = Login(
@@ -118,18 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }, listener: (context, state) {
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
       if (state is ErrorLS) {
-        scaffoldMessenger.showSnackBar(SnackBar(
-          content: Text(
-            state.message,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          backgroundColor: AppColors.danger,
-        ));
+        AppSnackbar.danger(context: context, text: state.message);
       } else if (state is SuccessLS) {
         Future.microtask(() => context.read<AuthBloc>().add(OnLoggingIn()));
-        // context.read<LoginBloc>().close();
         context.go(HomeScreen.routePath);
       }
     });

@@ -3,8 +3,10 @@ import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/domain/entities/user.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
+import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class TopBarHome extends StatelessWidget {
   final User? credentials;
@@ -219,6 +221,59 @@ class _CardAttendState extends State<CardAttend> {
           ),
         );
       },
+    );
+  }
+}
+
+class BottomSheetAttend extends StatefulWidget {
+  const BottomSheetAttend({super.key});
+
+  @override
+  State<BottomSheetAttend> createState() => _BottomSheetAttendState();
+}
+
+class _BottomSheetAttendState extends State<BottomSheetAttend> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.maxFinite,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(12),
+            child: Column(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                const Text(
+                  'Attend',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  icon: const Icon(Icons.close_sharp),
+                )
+              ]),
+              const Divider(),
+              const SizedBox(height: 12),
+              AttendanceButton(
+                title: 'Check-In',
+                onTap: () {},
+                type: AttendanceButtonType.checkIn,
+              ),
+              const SizedBox(height: 12),
+              AttendanceButton(
+                title: 'Absent',
+                onTap: () {},
+                type: AttendanceButtonType.absent,
+              ),
+              const SizedBox(height: 22),
+            ]),
+          )
+        ],
+      ),
     );
   }
 }

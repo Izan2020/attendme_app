@@ -17,6 +17,6 @@ class CalendarDateCDS extends CurrentDateState {
 
 class TodaysDateCDS extends CurrentDateState {
   @override
-  final DateTime? date;
-  TodaysDateCDS({this.date});
+  final DateTime? date = DateTime.now();
+  TodaysDateCDS();
 }
