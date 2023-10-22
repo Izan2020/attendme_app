@@ -6,6 +6,7 @@ import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dar
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +21,6 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
-    debugPrint('Baru Masuk Auth');
     context.read<AuthBloc>().add(OnCheckAuth());
     super.initState();
   }

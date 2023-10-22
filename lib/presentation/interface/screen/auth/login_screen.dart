@@ -24,7 +24,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordField = TextEditingController();
   double _opacityLogin = 0;
 
-  _loginUser() async {
+  Future<void> loginUser() async {
+    final state = context.read<LoginBloc>().state;
+
+    if (state is LoadingLS) return;
+
     if (_emailField.text == '') {
       AppSnackbar.danger(context: context, text: 'Fill your Email.');
       return;
@@ -93,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           return const CircularProgressIndicator();
                         default:
                           return PrimaryButton(
-                              title: 'Login', onTap: () => _loginUser());
+                              title: 'Login', onTap: () => loginUser());
                       }
                     })
                   ],
@@ -108,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
         AppSnackbar.danger(context: context, text: state.message);
       } else if (state is SuccessLS) {
         Future.microtask(() => context.read<AuthBloc>().add(OnLoggingIn()));
+        Future.microtask(() => context.read<LoginBloc>().close());
         context.go(HomeScreen.routePath);
       }
     });

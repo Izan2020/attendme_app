@@ -14,6 +14,8 @@ class OnGetAttendanceStatusByCalendar extends AttendanceEvent {
   OnGetAttendanceStatusByCalendar(this.params);
 }
 
+class OnSetCleanState extends AttendanceEvent {}
+
 class OnAttending extends AttendanceEvent {}
 
 class OnCheckingOut extends AttendanceEvent {}

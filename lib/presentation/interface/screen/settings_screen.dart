@@ -1,5 +1,9 @@
+import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_event.dart';
+import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.dart';
+import 'package:attendme_app/presentation/bloc/current_date/current_date_event.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +34,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () async {
                 Future.microtask(
                     () => context.read<AuthBloc>().add(OnLogout()));
+                Future.microtask(() =>
+                    context.read<AttendanceBloc>().add(OnSetCleanState()));
+                Future.microtask(() =>
+                    context.read<CurrentDateBloc>().add(OnGetTodaysDate()));
                 context.go(AuthScreen.routePath);
               })
         ],

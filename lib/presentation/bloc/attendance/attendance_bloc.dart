@@ -40,5 +40,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
         },
       );
     }, transformer: debounce(const Duration(milliseconds: 300)));
+    on<OnSetCleanState>(
+      (event, emit) => emit(InitATS()),
+    );
   }
 }
