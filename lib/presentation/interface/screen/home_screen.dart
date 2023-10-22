@@ -37,9 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is SuccessAS) {
-            final auth = state;
+        builder: (context, authState) {
+          if (authState is SuccessAS) {
+            final auth = authState;
             return Column(
               children: [
                 // Top Appbar
@@ -62,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       dayColor: Colors.grey,
                       activeDayColor: Colors.white,
                       activeBackgroundDayColor: AppColors.secondaryColor,
-                      selectableDayPredicate: (date) => date.day != 23,
                     );
                   },
                 ),
@@ -121,58 +120,53 @@ class _HomeScreenState extends State<HomeScreen> {
                       margin: const EdgeInsets.all(15),
                       child: Column(
                         children: [
-                          BlocBuilder<AttendanceBloc, AttendanceState>(
-                            builder: (context, state) => CardAttend(
-                              onTap: () async {
-                                // final currentDate =
-                                //     context.read<CurrentDateBloc>().state;
+                          CardAttend(
+                            onTap: () async {
+                              final currentDate =
+                                  context.read<CurrentDateBloc>().state;
+                              final attendanceState =
+                                  context.read<AttendanceBloc>().state;
 
-                                if (state is LoadingATS) return;
+                              if (authState is LoadingATS) return;
+                              if (currentDate is CalendarDateCDS) return;
 
-                                switch (state) {
-                                  case ErrorATS():
-                                    getAttendanceStatus();
-                                    break;
-                                  case UnattendedATS():
-                                    showAttendBottomsheet(context);
-                                    break;
-
-                                  case AttendedATS():
-                                    // Handle the AttendedATS state
-                                    // You can access timeAttended with state.timeAttended and attendanceId with state.attendanceId
-                                    break;
-
-                                  case AbsentedATS():
-                                    // Handle the AbsentedATS state
-                                    // You can access attendanceId with state.attendanceId
-                                    break;
-
-                                  case AbsentRequestATS():
-                                    // Handle the AbsentRequestATS state
-                                    break;
-
-                                  case CheckedoutATS():
-                                    AppSnackbar.danger(
-                                        context: context,
-                                        text: "You're checked-out");
-                                    break;
-
-                                  case WeekendATS():
-                                    AppSnackbar.warning(
-                                        context: context,
-                                        text: "It's Weekend Day!");
-                                    break;
-                                  case FutureDateATS():
-                                    AppSnackbar.warning(
-                                        context: context, text: "Attend Soon");
-                                    break;
-
-                                  default:
-                                    break;
-                                }
-                              },
-                            ),
-                          )
+                              switch (attendanceState) {
+                                case ErrorATS():
+                                  getAttendanceStatus();
+                                  break;
+                                case UnattendedATS():
+                                  showAttendBottomsheet(context);
+                                  break;
+                                case AttendedATS():
+                                  // Handle the AttendedATS state
+                                  // You can access timeAttended with state.timeAttended and attendanceId with state.attendanceId
+                                  break;
+                                case AbsentedATS():
+                                  // Handle the AbsentedATS state
+                                  // You can access attendanceId with state.attendanceId
+                                  break;
+                                case AbsentRequestATS():
+                                  // Handle the AbsentRequestATS state
+                                  break;
+                                case CheckedoutATS():
+                                  AppSnackbar.danger(
+                                      context: context,
+                                      text: "You're checked-out");
+                                  break;
+                                case WeekendATS():
+                                  AppSnackbar.warning(
+                                      context: context,
+                                      text: "It's Weekend Day!");
+                                  break;
+                                case FutureDateATS():
+                                  AppSnackbar.warning(
+                                      context: context, text: "Attend Soon");
+                                  break;
+                                default:
+                                  break;
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),

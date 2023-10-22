@@ -11,3 +11,9 @@ String simpleDateTime({
   final simpleDateFormat = DateFormat(format);
   return simpleDateFormat.format(value);
 }
+
+String currentDateTime() {
+  DateTime now = DateTime.now();
+  DateFormat customFormat = DateFormat('yyyy-MM-dd 00:00:00.000');
+  return customFormat.format(now);
+}

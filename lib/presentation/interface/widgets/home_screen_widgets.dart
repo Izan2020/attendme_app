@@ -165,7 +165,13 @@ class _CardAttendState extends State<CardAttend> {
                 color: cardAttendData?.cardColor ?? Colors.grey,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(13),
-                )),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      spreadRadius: 0.1,
+                      blurRadius: 10,
+                      color: cardAttendData?.cardColor ?? Colors.black)
+                ]),
             child: Container(
               margin: const EdgeInsets.all(14),
               child: state is LoadingATS
