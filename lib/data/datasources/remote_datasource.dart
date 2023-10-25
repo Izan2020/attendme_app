@@ -34,12 +34,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   static String baseUrlImgur = 'https://api.imgur.com/3';
   static String clientIdImgur = '9582aa03bf58baa';
 
+  static Options supabaseOptions = Options(
+    headers: {"apikey": apiKeySupabase},
+  );
+
   Future<Response<dynamic>> supabaseGet(String url) async {
     final response = await client.get(
       '$baseUrlSupabase/$url',
-      options: Options(
-        headers: {"apikey": apiKeySupabase},
-      ),
+      options: supabaseOptions,
     );
     return response;
   }
@@ -51,9 +53,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     final response = await client.patch(
       '$baseUrlSupabase/$url',
       data: body,
-      options: Options(
-        headers: {"apikey": apiKeySupabase},
-      ),
+      options: supabaseOptions,
     );
     return response;
   }
@@ -65,9 +65,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     final response = await client.post(
       '$baseUrlSupabase/$url',
       data: body,
-      options: Options(
-        headers: {"apikey": apiKeySupabase},
-      ),
+      options: supabaseOptions,
     );
     response.headers.add('apiKey', apiKeySupabase);
     return response;
@@ -171,11 +169,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<String> postImageLink(File imageFile) async {
     FormData formData = FormData.fromMap({"image": imageFile});
-
     final response = await client.post('$baseUrlImgur/upload', data: formData);
     if (response.statusCode == 200) {
-      Map<String, dynamic> json = response.data;
-      return '';
+      Map<String, dynamic> data = response.data['data'];
+      String link = data['link'];
+      return link;
     } else {
       throw ServerException('${response.statusCode}');
     }
