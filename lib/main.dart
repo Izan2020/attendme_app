@@ -1,5 +1,6 @@
 import 'package:attendme_app/injection.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
@@ -39,6 +40,10 @@ class MyApp extends StatelessWidget {
         // Current Date Bloc
         BlocProvider<CurrentDateBloc>(
           create: (_) => di.inject<CurrentDateBloc>(),
+        ),
+        // Attending Bloc
+        BlocProvider<AttendingBloc>(
+          create: (_) => di.inject<AttendingBloc>(),
         ),
       ],
       child: MaterialApp.router(

@@ -2,14 +2,18 @@ import 'package:attendme_app/data/datasources/remote_datasource.dart';
 import 'package:attendme_app/data/repository/repository_impl.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:attendme_app/domain/usecases/check_auth.dart';
+import 'package:attendme_app/domain/usecases/check_out_user.dart';
 import 'package:attendme_app/domain/usecases/get_attendance_status.dart';
 import 'package:attendme_app/domain/usecases/get_login_credentials.dart';
+import 'package:attendme_app/domain/usecases/insert_attendance.dart';
 import 'package:attendme_app/domain/usecases/login_user.dart';
 import 'package:attendme_app/domain/usecases/set_loggedout.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +42,8 @@ Future<void> initializeDependencies() async {
   inject.registerLazySingleton(() => SetLoggedOut(inject()));
   inject.registerLazySingleton(() => GetLoginCredentials(inject()));
   inject.registerLazySingleton(() => GetAttendanceStatus(inject()));
+  inject.registerLazySingleton(() => AttendUser(inject()));
+  inject.registerLazySingleton(() => CheckoutUser(inject()));
 
   // Blocs
   // RegisterFactory is good for Blocs
@@ -51,11 +57,19 @@ Future<void> initializeDependencies() async {
       ));
   inject.registerFactory(() => AttendanceBloc(
         getAttendanceStatus: inject(),
+        attendUser: inject(),
+        checkoutUser: inject(),
       ));
   inject.registerFactory(
     () => CurrentDateBloc(),
   );
+  inject.registerFactory(
+    () => AttendingBloc(
+      attendUser: inject(),
+      checkoutUser: inject(),
+    ),
+  );
 
   // Client
-  inject.registerLazySingleton(() => Client());
+  inject.registerLazySingleton(() => Dio());
 }

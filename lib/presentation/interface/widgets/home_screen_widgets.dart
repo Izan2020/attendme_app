@@ -231,14 +231,80 @@ class _CardAttendState extends State<CardAttend> {
   }
 }
 
-class BottomSheetAttend extends StatefulWidget {
-  const BottomSheetAttend({super.key});
+class BottomSheetCheckin extends StatefulWidget {
+  const BottomSheetCheckin({super.key});
 
   @override
-  State<BottomSheetAttend> createState() => _BottomSheetAttendState();
+  State<BottomSheetCheckin> createState() => _BottomSheetCheckinState();
 }
 
-class _BottomSheetAttendState extends State<BottomSheetAttend> {
+class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
+  @override
+  Widget build(BuildContext context) {
+    return AppBottomSheet(
+        title: 'Check-in',
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 165,
+              decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: const BorderRadius.all(Radius.circular(12))),
+            ),
+            const SizedBox(height: 12),
+            PrimaryButton(title: 'Check-in', onTap: () {}),
+            const SizedBox(height: 22),
+          ],
+        ));
+  }
+}
+
+class BottomSheetAttend extends StatelessWidget {
+  final Function onGotoAbsent;
+  final Function onGotoAttend;
+  const BottomSheetAttend({
+    super.key,
+    required this.onGotoAbsent,
+    required this.onGotoAttend,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBottomSheet(
+        title: 'Attend',
+        child: Column(
+          children: [
+            AttendanceButton(
+              title: 'Check-In',
+              onTap: () async {
+                context.pop();
+                Future.delayed(
+                    const Duration(milliseconds: 600), () => onGotoAttend());
+              },
+              type: AttendanceButtonType.checkIn,
+            ),
+            const SizedBox(height: 12),
+            AttendanceButton(
+              title: 'Absent',
+              onTap: () async {
+                context.pop();
+                Future.delayed(
+                    const Duration(milliseconds: 600), () => onGotoAbsent());
+              },
+              type: AttendanceButtonType.absent,
+            ),
+            const SizedBox(height: 22),
+          ],
+        ));
+  }
+}
+
+class AppBottomSheet extends StatelessWidget {
+  final String title;
+  final Widget child;
+  const AppBottomSheet({super.key, required this.title, required this.child});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -251,9 +317,10 @@ class _BottomSheetAttendState extends State<BottomSheetAttend> {
             margin: const EdgeInsets.all(12),
             child: Column(children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const Text(
-                  'Attend',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   onPressed: () {
@@ -264,18 +331,7 @@ class _BottomSheetAttendState extends State<BottomSheetAttend> {
               ]),
               const Divider(),
               const SizedBox(height: 12),
-              AttendanceButton(
-                title: 'Check-In',
-                onTap: () {},
-                type: AttendanceButtonType.checkIn,
-              ),
-              const SizedBox(height: 12),
-              AttendanceButton(
-                title: 'Absent',
-                onTap: () {},
-                type: AttendanceButtonType.absent,
-              ),
-              const SizedBox(height: 22),
+              child
             ]),
           )
         ],

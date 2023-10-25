@@ -1,13 +1,20 @@
 import 'package:attendme_app/common/debouncer.dart';
+import 'package:attendme_app/domain/usecases/check_out_user.dart';
 import 'package:attendme_app/domain/usecases/get_attendance_status.dart';
+import 'package:attendme_app/domain/usecases/insert_attendance.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   final GetAttendanceStatus getAttendanceStatus;
-
-  AttendanceBloc({required this.getAttendanceStatus}) : super(InitATS()) {
+  final AttendUser attendUser;
+  final CheckoutUser checkoutUser;
+  AttendanceBloc({
+    required this.getAttendanceStatus,
+    required this.attendUser,
+    required this.checkoutUser,
+  }) : super(InitATS()) {
     on<OnGetAttendanceStatus>((event, emit) async {
       emit(LoadingATS());
       await Future.delayed(const Duration(milliseconds: 1500));

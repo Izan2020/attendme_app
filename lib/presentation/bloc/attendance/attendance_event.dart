@@ -15,12 +15,3 @@ class OnGetAttendanceStatusByCalendar extends AttendanceEvent {
 }
 
 class OnSetCleanState extends AttendanceEvent {}
-
-class OnAttending extends AttendanceEvent {}
-
-class OnCheckingOut extends AttendanceEvent {}
-
-class OnRequestAbsent extends AttendanceEvent {
-  final String message;
-  OnRequestAbsent(this.message);
-}

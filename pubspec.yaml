@@ -50,6 +50,7 @@ dependencies:
   build_runner: ^2.4.6
   calendar_timeline: ^1.1.2
   rxdart: ^0.27.7
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:

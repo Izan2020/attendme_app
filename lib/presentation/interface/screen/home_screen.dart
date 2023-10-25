@@ -28,7 +28,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    debugPrint('Baru Masuk Home');
     getAttendanceStatus();
     super.initState();
   }
@@ -120,53 +119,115 @@ class _HomeScreenState extends State<HomeScreen> {
                       margin: const EdgeInsets.all(15),
                       child: Column(
                         children: [
-                          CardAttend(
-                            onTap: () async {
-                              final currentDate =
-                                  context.read<CurrentDateBloc>().state;
-                              final attendanceState =
-                                  context.read<AttendanceBloc>().state;
+                          CardAttend(onTap: () async {
+                            final currentDate =
+                                context.read<CurrentDateBloc>().state;
+                            final attendanceState =
+                                context.read<AttendanceBloc>().state;
 
-                              if (authState is LoadingATS) return;
-                              if (currentDate is CalendarDateCDS) return;
+                            if (authState is LoadingATS) return;
+                            if (currentDate is CalendarDateCDS) return;
 
-                              switch (attendanceState) {
-                                case ErrorATS():
-                                  getAttendanceStatus();
-                                  break;
-                                case UnattendedATS():
-                                  showAttendBottomsheet(context);
-                                  break;
-                                case AttendedATS():
-                                  // Handle the AttendedATS state
-                                  // You can access timeAttended with state.timeAttended and attendanceId with state.attendanceId
-                                  break;
-                                case AbsentedATS():
-                                  // Handle the AbsentedATS state
-                                  // You can access attendanceId with state.attendanceId
-                                  break;
-                                case AbsentRequestATS():
-                                  // Handle the AbsentRequestATS state
-                                  break;
-                                case CheckedoutATS():
-                                  AppSnackbar.danger(
-                                      context: context,
-                                      text: "You're checked-out");
-                                  break;
-                                case WeekendATS():
-                                  AppSnackbar.warning(
-                                      context: context,
-                                      text: "It's Weekend Day!");
-                                  break;
-                                case FutureDateATS():
-                                  AppSnackbar.warning(
-                                      context: context, text: "Attend Soon");
-                                  break;
-                                default:
-                                  break;
-                              }
-                            },
+                            switch (attendanceState) {
+                              case ErrorATS():
+                                getAttendanceStatus();
+                                break;
+                              case UnattendedATS():
+                                showAttendBottomsheet(
+                                    context: context,
+                                    widget: BottomSheetAttend(
+                                      onGotoAbsent: () {},
+                                      onGotoAttend: () => showAttendBottomsheet(
+                                          context: context,
+                                          widget: const BottomSheetCheckin()),
+                                    ));
+                                break;
+                              case AttendedATS():
+
+                                // Handle the AttendedATS state
+                                // You can access timeAttended with state.timeAttended and attendanceId with state.attendanceId
+                                break;
+                              case AbsentedATS():
+                                // Handle the AbsentedATS state
+                                // You can access attendanceId with state.attendanceId
+                                break;
+                              case AbsentRequestATS():
+                                // Handle the AbsentRequestATS state
+                                break;
+                              case CheckedoutATS():
+                                AppSnackbar.danger(
+                                    context: context,
+                                    text: "You're checked-out");
+                                break;
+                              case WeekendATS():
+                                AppSnackbar.warning(
+                                    context: context,
+                                    text: "It's Weekend Day!");
+                                break;
+                              case FutureDateATS():
+                                AppSnackbar.warning(
+                                    context: context, text: "Attend Soon");
+                                break;
+                              default:
+                                break;
+                            }
+                          }),
+                          const SizedBox(
+                            height: 12,
                           ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 88,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(13))),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 88,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(13))),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 88,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(13))),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 88,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(13))),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -182,11 +243,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> showAttendBottomsheet(BuildContext context) async {
+  Future<void> showAttendBottomsheet(
+      {required BuildContext context, required Widget widget}) async {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return const BottomSheetAttend();
+          return widget;
         });
     return;
   }
