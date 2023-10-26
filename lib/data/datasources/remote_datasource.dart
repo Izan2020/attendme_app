@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:attendme_app/common/encryptor.dart';
 import 'package:attendme_app/common/exception.dart';
 import 'package:attendme_app/common/timestamp.dart';
@@ -8,6 +6,7 @@ import 'package:attendme_app/data/models/login_model_response.dart';
 import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
 import 'package:attendme_app/domain/entities/login.dart';
+import 'package:attendme_app/domain/entities/upload_image_params.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -17,7 +16,7 @@ abstract class RemoteDataSource {
   Future<bool> updateCheckOut(int attendanceId);
   Future<bool> insertAttendance(AttendanceBody body);
 
-  Future<String> postImageLink(File imageFile);
+  Future<String> uploadImageImgur(UploadImage body);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -35,7 +34,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   static String clientIdImgur = '9582aa03bf58baa';
 
   static Options supabaseOptions = Options(
-    headers: {"apikey": apiKeySupabase},
+    headers: {
+      "apikey": apiKeySupabase,
+      "Authorization": "Bearer $apiKeySupabase",
+    },
+  );
+  static Options imgurOptions = Options(
+    headers: {"Authorization": 'Client-ID $clientIdImgur'},
   );
 
   Future<Response<dynamic>> supabaseGet(String url) async {
@@ -67,7 +72,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       data: body,
       options: supabaseOptions,
     );
-    response.headers.add('apiKey', apiKeySupabase);
     return response;
   }
 
@@ -81,10 +85,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     if (request.statusCode == 200) {
       List<dynamic> response = request.data;
       if (response.isNotEmpty) {
-        final jsonData = json.decode(request.data);
-        Map<String, dynamic> firstElement = jsonData[0];
-        debugPrint('Success RDS $firstElement');
-        return LoginData.fromJson(firstElement);
+        return LoginData.fromJson(response[0]);
       } else {
         debugPrint('Error RDS');
         return null;
@@ -159,17 +160,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       body: attendanceBody,
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {
-      throw ServerException('${response.statusCode}');
+      throw ServerException('${response.statusMessage}');
     }
   }
 
   @override
-  Future<String> postImageLink(File imageFile) async {
-    FormData formData = FormData.fromMap({"image": imageFile});
-    final response = await client.post('$baseUrlImgur/upload', data: formData);
+  Future<String> uploadImageImgur(UploadImage body) async {
+    FormData formData = FormData.fromMap({
+      "image": await MultipartFile.fromFile(
+        body.filePath,
+        filename: body.fileName,
+      )
+    });
+    final response = await client.post(
+      '$baseUrlImgur/upload',
+      data: formData,
+      options: imgurOptions,
+    );
     if (response.statusCode == 200) {
       Map<String, dynamic> data = response.data['data'];
       String link = data['link'];

@@ -121,6 +121,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  camera:
+    dependency: "direct main"
+    description:
+      name: camera
+      sha256: "1f9010f0689774380fbcd7d6b7820a5157e8e97685fa66d619e1d1f58b3fdf93"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.5+5"
+  camera_android:
+    dependency: transitive
+    description:
+      name: camera_android
+      sha256: "58463140f1b39591b8e2155861b436abad4ceb48160058be8374164ff0309ef3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.8+13"
+  camera_avfoundation:
+    dependency: transitive
+    description:
+      name: camera_avfoundation
+      sha256: "9495e633cda700717bbe299b0979e6c4a08cee45f298945973dc9cf3e4c1cba5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.13+6"
+  camera_platform_interface:
+    dependency: transitive
+    description:
+      name: camera_platform_interface
+      sha256: "86fd4fc597c6e455265ddb5884feb352d0171ad14b9cdf3aba30da59b25738c4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.0"
+  camera_web:
+    dependency: transitive
+    description:
+      name: camera_web
+      sha256: d4c2c571c7af04f8b10702ca16bb9ed2a26e64534171e8f75c9349b2c004d8f1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2+3"
   characters:
     dependency: transitive
     description:
@@ -169,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      sha256: "445db18de832dba8d851e287aff8ccf169bed30d2e94243cb54c7d2f1ed2142c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3+6"
   crypto:
     dependency: "direct main"
     description:
@@ -217,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
+  face_camera:
+    dependency: "direct main"
+    description:
+      name: face_camera
+      sha256: "2ff7c51bee12e49d2c5c3dfea6ccd416ef5bc827425a5e405aae96a613fe1bd4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.8"
   fake_async:
     dependency: transitive
     description:
@@ -270,6 +326,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: b068ffc46f82a55844acfa4fdbb61fad72fa2aef0905548419d97f0f95c456da
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.17"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -288,6 +352,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  geolocator:
+    dependency: "direct main"
+    description:
+      name: geolocator
+      sha256: e946395fc608842bb2f6c914807e9183f86f3cb787f6b8f832753e5251036f02
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.1.0"
+  geolocator_android:
+    dependency: transitive
+    description:
+      name: geolocator_android
+      sha256: f19d53ec6878efb8aac82251cffb690150c9499c074dd295b2a4aee0753d20b8
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.2"
+  geolocator_apple:
+    dependency: transitive
+    description:
+      name: geolocator_apple
+      sha256: ab90ae811c42ec2f6021e01eca71df00dee6ff1e69d2c2dafd4daeb0b793f73d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
+  geolocator_platform_interface:
+    dependency: transitive
+    description:
+      name: geolocator_platform_interface
+      sha256: b7aca62aa05d7e610c396a53a1936ff87fce2f735d76e93fde9269c341c46a25
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.1"
+  geolocator_web:
+    dependency: transitive
+    description:
+      name: geolocator_web
+      sha256: "59083f7e0871b78299918d92bf930a14377f711d2d1156c558cd5ebae6c20d58"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  geolocator_windows:
+    dependency: transitive
+    description:
+      name: geolocator_windows
+      sha256: "8725beaa00db2b52f53d9811584cb4488240b250b04a09763e80945017f65c9c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   get_it:
     dependency: "direct main"
     description:
@@ -312,6 +424,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "11.0.0"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: "68429fa2e17686819dbaf2344790e3daa59924ef8625dd24f97f9deaaed42767"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
+  google_mlkit_face_detection:
+    dependency: transitive
+    description:
+      name: google_mlkit_face_detection
+      sha256: e3b42f93fb5918a7de4795befd715caeb9f770a0a257bb4a9b00a87246197d19
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   graphs:
     dependency: transitive
     description:
@@ -528,6 +656,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   rxdart:
     dependency: "direct main"
     description:
@@ -645,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   stack_trace:
     dependency: transitive
     description:
@@ -709,6 +853,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: b715b8d3858b6fa9f68f87d20d98830283628014750c2b09b6f516c1da4af2a7
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   vector_math:
     dependency: transitive
     description:
@@ -767,4 +919,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.1.2 <4.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.13.0"

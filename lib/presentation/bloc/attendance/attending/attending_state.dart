@@ -5,13 +5,13 @@ class AttendingState extends Equatable {
   List<Object?> get props => [];
 }
 
-class OnInitATNS extends AttendingState {}
+class InitATNS extends AttendingState {}
 
-class OnLoadingATNS extends AttendingState {}
+class LoadingATNS extends AttendingState {}
 
-class OnErrorATNS extends AttendingState {
+class ErrorATNS extends AttendingState {
   final String message;
-  OnErrorATNS(this.message);
+  ErrorATNS(this.message);
 }
 
-class OnSuccessATNS extends AttendingState {}
+class SuccessATNS extends AttendingState {}

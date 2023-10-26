@@ -10,41 +10,41 @@ class AttendingBloc extends Bloc<AttendingEvent, AttendingState> {
   AttendingBloc({
     required this.attendUser,
     required this.checkoutUser,
-  }) : super(OnInitATNS()) {
+  }) : super(InitATNS()) {
     on<OnAttendUser>((event, emit) async {
-      emit(OnLoadingATNS());
+      emit(LoadingATNS());
       final result = await attendUser.execute(event.body);
       result.fold(
         (failure) {
-          emit(OnErrorATNS(failure.message));
+          emit(ErrorATNS(failure.message));
         },
         (success) {
-          emit(OnSuccessATNS());
-          emit(OnInitATNS());
+          emit(SuccessATNS());
+          emit(InitATNS());
         },
       );
     });
     on<OnAbsentRequestUser>((event, emit) async {
-      emit(OnLoadingATNS());
+      emit(LoadingATNS());
       final result = await attendUser.execute(event.body);
       result.fold(
         (failure) {
-          emit(OnErrorATNS(failure.message));
+          emit(ErrorATNS(failure.message));
         },
         (success) {
-          emit(OnSuccessATNS());
-          emit(OnInitATNS());
+          emit(SuccessATNS());
+          emit(InitATNS());
         },
       );
     });
     on<OnCheckoutUser>((event, emit) async {
-      emit(OnLoadingATNS());
+      emit(LoadingATNS());
       final result = await checkoutUser.execute(event.userId);
       result.fold(
-        (failure) => emit(OnErrorATNS(failure.message)),
+        (failure) => emit(ErrorATNS(failure.message)),
         (success) {
-          emit(OnSuccessATNS());
-          emit(OnInitATNS());
+          emit(SuccessATNS());
+          emit(InitATNS());
         },
       );
     });

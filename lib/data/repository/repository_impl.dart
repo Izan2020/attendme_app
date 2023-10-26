@@ -10,6 +10,7 @@ import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/attendance_status.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
 import 'package:attendme_app/domain/entities/login.dart';
+import 'package:attendme_app/domain/entities/upload_image_params.dart';
 import 'package:attendme_app/domain/entities/user.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:dartz/dartz.dart';
@@ -89,6 +90,18 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, bool>> checkOutUser(int attendanceId) async {
     try {
       final result = await remoteDataSource.updateCheckOut(attendanceId);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure('Server Failure ${e.message}'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(UploadImage body) async {
+    try {
+      final result = await remoteDataSource.uploadImageImgur(body);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure('Server Failure ${e.message}'));
