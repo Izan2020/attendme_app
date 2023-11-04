@@ -1,15 +1,12 @@
+import 'package:attendme_app/presentation/interface/fragments/bottom_sheet_checkin.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomSheetAttend extends StatelessWidget {
-  final Function onGotoAbsent;
-  final Function onGotoAttend;
   const BottomSheetAttend({
     super.key,
-    required this.onGotoAbsent,
-    required this.onGotoAttend,
   });
 
   @override
@@ -22,9 +19,7 @@ class BottomSheetAttend extends StatelessWidget {
             AttendanceButton(
               title: 'Check-In',
               onTap: () async {
-                context.pop();
-                Future.delayed(
-                    const Duration(milliseconds: 600), () => onGotoAttend());
+                moveBottomSheet(context, widget: const BottomSheetCheckin());
               },
               type: AttendanceButtonType.checkIn,
             ),
@@ -33,13 +28,25 @@ class BottomSheetAttend extends StatelessWidget {
               title: 'Absent',
               onTap: () async {
                 context.pop();
-                Future.delayed(
-                    const Duration(milliseconds: 600), () => onGotoAbsent());
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (builder) => const BottomSheetCheckin());
               },
               type: AttendanceButtonType.absent,
             ),
             const SizedBox(height: 22),
           ],
+        ));
+  }
+
+  Future<void> moveBottomSheet(BuildContext context,
+      {required Widget widget}) async {
+    context.pop();
+    Future.microtask(() => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (builder) => widget,
         ));
   }
 }

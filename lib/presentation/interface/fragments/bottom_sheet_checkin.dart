@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:attendme_app/common/colors.dart';
 import 'package:attendme_app/common/snackbars.dart';
 import 'package:attendme_app/common/timestamp.dart';
+import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
 import 'package:attendme_app/domain/entities/upload_image_params.dart';
 
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attending/attending_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_state.dart';
 import 'package:attendme_app/presentation/bloc/attendance/image/image_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/image/image_event.dart';
@@ -18,8 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomSheetCheckin extends StatefulWidget {
-  final Function(String) onTapCheckin;
-  const BottomSheetCheckin({super.key, required this.onTapCheckin});
+  const BottomSheetCheckin({super.key});
 
   @override
   State<BottomSheetCheckin> createState() => _BottomSheetCheckinState();
@@ -37,7 +40,7 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
           context.pop();
         }
       },
-      builder: (context, state) {
+      builder: (context, attendingState) {
         return AppBottomSheet(
             onClose: () {},
             title: 'Check-in',
@@ -77,48 +80,87 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
                           message: 'Say Cheese !',
                           defaultCameraLens: CameraLens.front,
                           defaultFlashMode: CameraFlashMode.off,
-                          onFaceDetected: (face) {},
                           showCaptureControl: false,
                           showCameraLensControl: false,
                           autoCapture: true,
-                          onCapture: (file) async {
-                            await Future.delayed(
-                                const Duration(milliseconds: 1200));
-                            final userState =
-                                context.read<AuthBloc>().state as SuccessAS;
-                            final fullName =
-                                '${userState.credentials?.surName} ${userState.credentials?.lastName}';
-                            UploadImage upload = UploadImage(
-                                fileName:
-                                    '$fullName - ${simpleDateTime(value: DateTime.now(), format: 'dd, MMMM yyyy')}',
-                                filePath: file!.path);
-                            context
-                                .read<ImageBloc>()
-                                .add(OnUploadImage(upload));
-                          },
+                          onCapture: (file) => uploadImage(file),
                         ),
                       ),
                     if (state is SuccessIMS)
                       Image.network(state.imageLink,
-                          loadingBuilder: (context, child, loadingProgress) =>
-                              child),
+                          loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      }),
                     const SizedBox(height: 12),
                     if (state is SuccessIMS)
-                      SecondaryButton(
-                          title: 'Retake Picture',
-                          onTap: () =>
-                              context.read<ImageBloc>().add(OnCleanState())),
-                    const SizedBox(height: 12),
-                    if (state is SuccessIMS)
-                      PrimaryButton(
-                          title: 'Check-in',
-                          onTap: () => widget.onTapCheckin(state.imageLink)),
-                    const SizedBox(height: 22),
+                      Column(
+                        children: [
+                          SecondaryButton(
+                              title: 'Retake Picture',
+                              onTap: () => context
+                                  .read<ImageBloc>()
+                                  .add(OnCleanState())),
+                          const SizedBox(height: 12),
+                          PrimaryButton(
+                              title: 'Check-in',
+                              onTap: () => uploadAttendance()),
+                          const SizedBox(height: 22),
+                        ],
+                      ),
+                    if (attendingState is LoadingATNS)
+                      Column(
+                        children: [
+                          const SizedBox(height: 12),
+                          const CircularProgressIndicator(),
+                          const SizedBox(height: 22),
+                          Text(
+                            'Uploading Attendance',
+                            style: TextStyle(color: AppColors.primaryColor),
+                          )
+                        ],
+                      ),
                   ],
                 );
               },
             ));
       },
     );
+  }
+
+  Future<void> uploadImage(File? file) async {
+    await Future.delayed(const Duration(milliseconds: 1200));
+    final userState = context.read<AuthBloc>().state as SuccessAS;
+    final fullName =
+        '${userState.credentials?.surName} ${userState.credentials?.lastName}';
+    UploadImage upload = UploadImage(
+        fileName:
+            '$fullName - ${simpleDateTime(value: DateTime.now(), format: 'dd, MMMM yyyy')}',
+        filePath: file!.path);
+    context.read<ImageBloc>().add(OnUploadImage(upload));
+  }
+
+  Future<void> uploadAttendance() async {
+    final authState = context.read<AuthBloc>().state as SuccessAS;
+    final imageBloc = context.read<ImageBloc>().state as SuccessIMS;
+    final imageUrl = imageBloc.imageLink;
+    final AttendanceBody body = AttendanceBody(
+        userId: authState.credentials?.userId ?? 0,
+        companyId: authState.credentials?.companyId ?? 0,
+        imageUrl: imageUrl,
+        longitude: '1231231312',
+        latitude: '12312312312',
+        status: 'attended',
+        reason: 'none');
+    context.read<AttendingBloc>().add(OnAttendUser(body));
   }
 }

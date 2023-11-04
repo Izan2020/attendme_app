@@ -11,17 +11,18 @@ class AttendanceCheckResponse extends Equatable {
   final String? status;
   final String? reason;
   final String? createdAt;
+  final String? createdTime;
   final int? attendanceId;
   const AttendanceCheckResponse(
-      {this.status, this.createdAt, this.reason, this.attendanceId});
+      {this.status,
+      this.createdAt,
+      this.reason,
+      this.attendanceId,
+      this.createdTime});
 
   AttendanceStatus toEntity() {
     return AttendanceStatus(
-      status,
-      createdAt,
-      attendanceId,
-      reason,
-    );
+        status, createdAt, attendanceId, reason, createdTime);
   }
 
   factory AttendanceCheckResponse.fromJson(Map<String, dynamic> json) =>

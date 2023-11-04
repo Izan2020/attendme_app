@@ -3,12 +3,12 @@ import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/image/image_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
-import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.dart';
+import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
-import 'package:face_camera/face_camera.dart';
+
 import 'injection.dart' as di;
 import 'package:attendme_app/presentation/interface/screen/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FaceCamera.initialize();
+
   await initializeDependencies();
   runApp(const MyApp());
 }
@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
           create: (_) => di.inject<AttendanceBloc>(),
         ),
         // Current Date Bloc
-        BlocProvider<CurrentDateBloc>(
-          create: (_) => di.inject<CurrentDateBloc>(),
+        BlocProvider<CalendarBloc>(
+          create: (_) => di.inject<CalendarBloc>(),
         ),
         // Attending Bloc
         BlocProvider<AttendingBloc>(

@@ -1,73 +1,161 @@
 import 'package:attendme_app/common/colors.dart';
 import 'package:attendme_app/common/timestamp.dart';
-import 'package:attendme_app/domain/entities/user.dart';
+
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
+import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
+import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
+import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
+import 'package:attendme_app/presentation/bloc/calendar/calendar_state.dart';
+import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class TopBarHome extends StatelessWidget {
-  final User? credentials;
   final Function onTapSettings;
   final Function onTapProfile;
   const TopBarHome({
     super.key,
-    required this.credentials,
     required this.onTapSettings,
     required this.onTapProfile,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () => onTapProfile(),
-                  child: ClipOval(
-                    child: Image.network(
-                      '${credentials?.imageUrl}',
-                      height: 47,
-                      width: 47,
-                      fit: BoxFit.fill,
-                    ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is SuccessAS) {
+          final credentials = state.credentials;
+          return SafeArea(
+            child: Container(
+              margin: const EdgeInsets.all(12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => onTapProfile(),
+                        child: ClipOval(
+                          child: Image.network(
+                            '${credentials?.imageUrl}',
+                            height: 47,
+                            width: 47,
+                            fit: BoxFit.fill,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.person);
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${credentials?.jobDesk}',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          Text(
+                            '${credentials?.surName} ${credentials?.lastName}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
                   ),
-                ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${credentials?.jobDesk}',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w300,
-                      ),
+                  IconButton(
+                    onPressed: () => onTapSettings(),
+                    icon: const Icon(Icons.settings),
+                  )
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+}
+
+class HomeCalendar extends StatefulWidget {
+  final Function(DateTime) onDateSelected;
+  final Function onTapResetCalendar;
+  final bool selectable;
+  const HomeCalendar({
+    super.key,
+    required this.onDateSelected,
+    required this.onTapResetCalendar,
+    required this.selectable,
+  });
+  @override
+  State<HomeCalendar> createState() => HomeCalendarState();
+}
+
+class HomeCalendarState extends State<HomeCalendar> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CalendarBloc, CalendarState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            CalendarTimeline(
+              initialDate: state.date,
+              firstDate: DateTime(state.date.year - 20 - 20, 1, 1),
+              lastDate: DateTime(state.date.year + 20, 12, 30),
+              onDateSelected: (date) => widget.onDateSelected(date),
+              leftMargin: 20,
+              monthColor: Colors.blueGrey,
+              dayColor: Colors.grey,
+              activeDayColor: Colors.white,
+              activeBackgroundDayColor: AppColors.secondaryColor,
+            ),
+            const SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (state is TodaysDateCDS)
+                  Container(
+                    margin: const EdgeInsets.all(11),
+                    child: Text(
+                      'Today',
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor),
                     ),
-                    Text(
-                      '${credentials?.surName} ${credentials?.lastName}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
+                  )
+                else if (state is CalendarDateCDS)
+                  IconButton(
+                      onPressed: () => widget.onTapResetCalendar(),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: AppColors.primaryColor,
+                      )),
+                Container(
+                  margin: const EdgeInsets.all(11),
+                  child: Text(
+                    simpleDateTime(value: state.date, format: 'dd, MMMM yyyy'),
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                        color: AppColors.primaryColor),
+                  ),
                 )
               ],
-            ),
-            IconButton(
-              onPressed: () => onTapSettings(),
-              icon: const Icon(Icons.settings),
             )
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -82,7 +170,8 @@ class CardAttendData {
 
 class CardAttend extends StatefulWidget {
   final Function onTap;
-  const CardAttend({super.key, required this.onTap});
+
+  CardAttend({super.key, required this.onTap});
 
   @override
   State<CardAttend> createState() => _CardAttendState();
@@ -94,12 +183,12 @@ class _CardAttendState extends State<CardAttend> {
     return BlocBuilder<AttendanceBloc, AttendanceState>(
       builder: (context, state) {
         CardAttendData? cardAttendData;
-
         switch (state) {
           case AttendedATS():
             cardAttendData = CardAttendData(
               'Youre Attended.',
-              simpleDateTime(value: state.timeAttended!, format: 'hh:mm a'),
+              simpleDateTime(
+                  value: state.timeAttended!.toLocal(), format: 'hh:mm a'),
               Icons.check,
               AppColors.success,
             );
@@ -188,15 +277,21 @@ class _CardAttendState extends State<CardAttend> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Icon(Icons.error_outline_rounded),
-                            Text(state.message ?? ""),
-                            const Text('Click here to Try Again')
+                            const Icon(
+                              Icons.error_outline_rounded,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              state.message ?? "",
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           ],
                         )
                       : Row(
                           children: [
                             Icon(
-                              cardAttendData?.icon ?? Icons.abc,
+                              cardAttendData?.icon,
                               size: 56,
                               color: Colors.white,
                             ),
@@ -206,14 +301,14 @@ class _CardAttendState extends State<CardAttend> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    cardAttendData?.subTitle ?? "Sub Title",
+                                    cardAttendData?.subTitle ?? "",
                                     style: const TextStyle(
                                         fontSize: 10,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500),
                                   ),
                                   Text(
-                                    cardAttendData?.title ?? "Title",
+                                    cardAttendData?.title ?? "",
                                     style: const TextStyle(
                                         fontSize: 30,
                                         color: Colors.white,

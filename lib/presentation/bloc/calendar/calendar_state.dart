@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 
-class CurrentDateState extends Equatable {
+class CalendarState extends Equatable {
   @override
   List<Object?> get props => [];
 
   get date => null;
 }
 
-class InitCDS extends CurrentDateState {}
+class InitCDS extends CalendarState {}
 
-class CalendarDateCDS extends CurrentDateState {
+class CalendarDateCDS extends CalendarState {
   @override
   final DateTime? date;
   CalendarDateCDS({this.date});
 }
 
-class TodaysDateCDS extends CurrentDateState {
+class TodaysDateCDS extends CalendarState {
   @override
   final DateTime? date = DateTime.now();
   TodaysDateCDS();

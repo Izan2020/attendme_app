@@ -1,3 +1,5 @@
+import 'package:attendme_app/common/imgur.dart';
+import 'package:attendme_app/common/supabase.dart';
 import 'package:attendme_app/data/datasources/remote_datasource.dart';
 import 'package:attendme_app/data/repository/repository_impl.dart';
 import 'package:attendme_app/domain/repository/repository.dart';
@@ -13,7 +15,7 @@ import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/image/image_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
-import 'package:attendme_app/presentation/bloc/current_date/current_date_bloc.dart';
+import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -28,8 +30,10 @@ Future<void> initializeDependencies() async {
 
   // Datasources
   // RegisterLazySingleton is good for Datasources
-  inject.registerLazySingleton<RemoteDataSource>(
-      () => RemoteDataSourceImpl(client: inject()));
+  inject.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(
+        imgur: inject(),
+        supabase: inject(),
+      ));
 
   // Repositories
   // RegisterLazySingleton is good for Repository
@@ -58,12 +62,12 @@ Future<void> initializeDependencies() async {
         loginUser: inject(),
       ));
   inject.registerFactory(() => AttendanceBloc(
-        getAttendanceStatus: inject(),
-        attendUser: inject(),
-        checkoutUser: inject(),
-      ));
+      getAttendanceStatus: inject(),
+      attendUser: inject(),
+      checkoutUser: inject(),
+      getLoginCredentials: inject()));
   inject.registerFactory(
-    () => CurrentDateBloc(),
+    () => CalendarBloc(),
   );
   inject.registerFactory(
     () => AttendingBloc(
@@ -77,4 +81,6 @@ Future<void> initializeDependencies() async {
 
   // Client
   inject.registerLazySingleton(() => Dio());
+  inject.registerLazySingleton(() => SupabaseClient(client: inject()));
+  inject.registerLazySingleton(() => ImgurClient(client: inject()));
 }

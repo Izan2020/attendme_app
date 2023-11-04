@@ -102,7 +102,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, String>> uploadImage(UploadImage body) async {
     try {
       final result = await remoteDataSource.uploadImageImgur(body);
-      return Right(result);
+      return Right(result ?? "");
     } on ServerException catch (e) {
       return Left(ServerFailure('Server Failure ${e.message}'));
     } on SocketException {

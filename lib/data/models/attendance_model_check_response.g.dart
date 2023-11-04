@@ -9,17 +9,19 @@ part of 'attendance_model_check_response.dart';
 AttendanceCheckResponse _$AttendanceCheckResponseFromJson(
         Map<String, dynamic> json) =>
     AttendanceCheckResponse(
-      status: json['status'] as String,
-      createdAt: json['created_at'] as String?,
+      status: json['status'] as String?,
+      createdAt: json['createdAt'] as String?,
       reason: json['reason'] as String?,
-      attendanceId: json['id'] as int?,
+      attendanceId: json['attendanceId'] as int?,
+      createdTime: json['created_time'] as String?,
     );
 
 Map<String, dynamic> _$AttendanceCheckResponseToJson(
         AttendanceCheckResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'createdAt': instance.createdAt,
       'reason': instance.reason,
-      'id': instance.attendanceId,
+      'createdAt': instance.createdAt,
+      'createdTime': instance.createdTime,
+      'attendanceId': instance.attendanceId,
     };

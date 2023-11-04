@@ -5,8 +5,8 @@ class AttendanceEvent {
 }
 
 class OnGetAttendanceStatus extends AttendanceEvent {
-  final CheckAttendanceParams params;
-  OnGetAttendanceStatus(this.params);
+  final DateTime date;
+  OnGetAttendanceStatus(this.date);
 }
 
 class OnGetAttendanceStatusByCalendar extends AttendanceEvent {

@@ -4,10 +4,12 @@ class AttendanceStatus {
   String? dateAttachment;
   int? attendanceId;
   String? reason;
+  String? createdTime;
   AttendanceStatus(
     this.status,
     this.dateAttachment,
     this.attendanceId,
     this.reason,
+    this.createdTime,
   );
 }
