@@ -105,14 +105,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<bool> updateCheckOut(int attendanceId) async {
-    final checkOutBody = {"status": "checked-out"};
+    final checkOutBody = {
+      "status": "checked-out",
+      "updated_at": "now()",
+    };
 
     try {
       final response = await supabase.patch(
-        'attendance?status=eq.$attendanceId',
+        'attendance?id=eq.$attendanceId',
         body: checkOutBody,
       );
-      if (response.statusCode == 200) {
+      debugPrint('Checkout Status Code ${response.statusCode}');
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 ||
+          response.statusCode == 204) {
         return true;
       }
     } on DioException catch (e) {
@@ -137,6 +143,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       "status": body.status,
       "reason": body.reason,
     };
+
+    await Future.delayed(const Duration(milliseconds: 1200));
 
     try {
       final response = await supabase.post(

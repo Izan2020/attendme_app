@@ -16,6 +16,7 @@ import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bl
 import 'package:attendme_app/presentation/bloc/attendance/image/image_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
+import 'package:attendme_app/presentation/bloc/location/location_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -77,6 +78,9 @@ Future<void> initializeDependencies() async {
   );
   inject.registerFactory(
     () => ImageBloc(uploadImageImgur: inject()),
+  );
+  inject.registerFactory(
+    () => LocationBloc(),
   );
 
   // Client

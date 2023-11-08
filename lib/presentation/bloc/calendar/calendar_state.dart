@@ -4,7 +4,7 @@ class CalendarState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  get date => null;
+  get date => [];
 }
 
 class InitCDS extends CalendarState {}

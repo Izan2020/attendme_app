@@ -10,6 +10,7 @@ import 'package:attendme_app/presentation/bloc/calendar/calendar_state.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 
 class TopBarHome extends StatelessWidget {
@@ -44,7 +45,7 @@ class TopBarHome extends StatelessWidget {
                             width: 47,
                             fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.person);
+                              return const Text('');
                             },
                           ),
                         ),
@@ -109,6 +110,14 @@ class HomeCalendarState extends State<HomeCalendar> {
         return Column(
           children: [
             CalendarTimeline(
+              showYears: false,
+              selectableDayPredicate: (day) {
+                if (!widget.selectable) {
+                  return day == state.date;
+                } else {
+                  return true;
+                }
+              },
               initialDate: state.date,
               firstDate: DateTime(state.date.year - 20 - 20, 1, 1),
               lastDate: DateTime(state.date.year + 20, 12, 30),
@@ -139,7 +148,9 @@ class HomeCalendarState extends State<HomeCalendar> {
                       onPressed: () => widget.onTapResetCalendar(),
                       icon: Icon(
                         Icons.arrow_back,
-                        color: AppColors.primaryColor,
+                        color: widget.selectable
+                            ? AppColors.secondaryColor
+                            : Colors.grey,
                       )),
                 Container(
                   margin: const EdgeInsets.all(11),
@@ -171,7 +182,7 @@ class CardAttendData {
 class CardAttend extends StatefulWidget {
   final Function onTap;
 
-  CardAttend({super.key, required this.onTap});
+  const CardAttend({super.key, required this.onTap});
 
   @override
   State<CardAttend> createState() => _CardAttendState();
@@ -212,8 +223,8 @@ class _CardAttendState extends State<CardAttend> {
           case AbsentRequestATS():
             cardAttendData = CardAttendData(
               'Youre Absent',
-              'Absent OnRequest',
-              Icons.cancel,
+              'On Request',
+              Icons.person_pin_rounded,
               AppColors.warning,
             );
             break;
@@ -267,8 +278,9 @@ class _CardAttendState extends State<CardAttend> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircularProgressIndicator(
+                        SpinKitFoldingCube(
                           color: Colors.white,
+                          size: 20.0,
                         )
                       ],
                     )

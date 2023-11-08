@@ -16,3 +16,5 @@ class OnCheckoutUser extends AttendingEvent {
   final int userId;
   OnCheckoutUser(this.userId);
 }
+
+class OnSetClearState extends AttendingEvent {}

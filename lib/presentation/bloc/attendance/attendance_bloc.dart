@@ -6,6 +6,7 @@ import 'package:attendme_app/domain/usecases/get_login_credentials.dart';
 import 'package:attendme_app/domain/usecases/insert_attendance.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
@@ -33,6 +34,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           emit(ErrorATS(message: failure.message));
         },
         (result) {
+          debugPrint(result.attendanceId.toString());
           switch (result.status) {
             case 'attended':
               emit(AttendedATS(

@@ -15,3 +15,5 @@ class OnGetAttendanceStatusByCalendar extends AttendanceEvent {
 }
 
 class OnSetCleanState extends AttendanceEvent {}
+
+class OnRefreshAttendance extends AttendanceEvent {}

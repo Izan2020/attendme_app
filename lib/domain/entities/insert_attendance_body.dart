@@ -7,6 +7,7 @@ class AttendanceBody {
   String latitude;
   String? status = 'attended';
   String? reason = 'none';
+  String? message = 'none';
   AttendanceBody({
     required this.userId,
     required this.companyId,
@@ -15,5 +16,6 @@ class AttendanceBody {
     required this.latitude,
     this.status,
     this.reason,
+    this.message,
   });
 }

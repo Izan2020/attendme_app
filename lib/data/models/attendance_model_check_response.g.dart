@@ -10,9 +10,9 @@ AttendanceCheckResponse _$AttendanceCheckResponseFromJson(
         Map<String, dynamic> json) =>
     AttendanceCheckResponse(
       status: json['status'] as String?,
-      createdAt: json['createdAt'] as String?,
+      createdAt: json['created_at'] as String?,
       reason: json['reason'] as String?,
-      attendanceId: json['attendanceId'] as int?,
+      attendanceId: json['id'] as int?,
       createdTime: json['created_time'] as String?,
     );
 

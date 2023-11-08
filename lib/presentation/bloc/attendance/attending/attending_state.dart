@@ -14,4 +14,7 @@ class ErrorATNS extends AttendingState {
   ErrorATNS(this.message);
 }
 
-class SuccessATNS extends AttendingState {}
+class SuccessATNS extends AttendingState {
+  final String message;
+  SuccessATNS(this.message);
+}

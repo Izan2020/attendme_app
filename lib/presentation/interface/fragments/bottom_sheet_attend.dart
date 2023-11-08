@@ -1,3 +1,4 @@
+import 'package:attendme_app/presentation/interface/fragments/bottom_sheet_absent.dart';
 import 'package:attendme_app/presentation/interface/fragments/bottom_sheet_checkin.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
@@ -27,11 +28,7 @@ class BottomSheetAttend extends StatelessWidget {
             AttendanceButton(
               title: 'Absent',
               onTap: () async {
-                context.pop();
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (builder) => const BottomSheetCheckin());
+                moveBottomSheet(context, widget: const BottomSheetAbsent());
               },
               type: AttendanceButtonType.absent,
             ),

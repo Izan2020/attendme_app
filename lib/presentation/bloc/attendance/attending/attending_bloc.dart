@@ -2,6 +2,7 @@ import 'package:attendme_app/domain/usecases/check_out_user.dart';
 import 'package:attendme_app/domain/usecases/insert_attendance.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AttendingBloc extends Bloc<AttendingEvent, AttendingState> {
@@ -19,7 +20,7 @@ class AttendingBloc extends Bloc<AttendingEvent, AttendingState> {
           emit(ErrorATNS(failure.message));
         },
         (success) {
-          emit(SuccessATNS());
+          emit(SuccessATNS('Attended Successfully!'));
           emit(InitATNS());
         },
       );
@@ -32,18 +33,20 @@ class AttendingBloc extends Bloc<AttendingEvent, AttendingState> {
           emit(ErrorATNS(failure.message));
         },
         (success) {
-          emit(SuccessATNS());
+          emit(SuccessATNS('Absent Request Sent!'));
           emit(InitATNS());
         },
       );
     });
     on<OnCheckoutUser>((event, emit) async {
       emit(LoadingATNS());
+      debugPrint('Checking out');
       final result = await checkoutUser.execute(event.userId);
       result.fold(
         (failure) => emit(ErrorATNS(failure.message)),
         (success) {
-          emit(SuccessATNS());
+          debugPrint('result $success');
+          emit(SuccessATNS('Checked-out Successfully!'));
           emit(InitATNS());
         },
       );

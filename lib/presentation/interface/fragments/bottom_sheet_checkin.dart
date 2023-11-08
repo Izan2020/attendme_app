@@ -5,6 +5,8 @@ import 'package:attendme_app/common/snackbars.dart';
 import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
 import 'package:attendme_app/domain/entities/upload_image_params.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
 
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_event.dart';
@@ -14,6 +16,9 @@ import 'package:attendme_app/presentation/bloc/attendance/image/image_event.dart
 import 'package:attendme_app/presentation/bloc/attendance/image/image_state.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
+import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
+import 'package:attendme_app/presentation/bloc/location/location_bloc.dart';
+import 'package:attendme_app/presentation/bloc/location/location_event.dart';
 import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
 import 'package:face_camera/face_camera.dart';
@@ -36,7 +41,10 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
         if (state is ErrorATNS) {
           AppSnackbar.danger(context: context, text: state.message);
         } else if (state is SuccessATNS) {
-          AppSnackbar.success(context: context, text: 'Attended Successfully!');
+          final dateState = context.read<CalendarBloc>().state;
+          context
+              .read<AttendanceBloc>()
+              .add(OnGetAttendanceStatus(dateState.date));
           context.pop();
         }
       },
@@ -83,7 +91,12 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
                           showCaptureControl: false,
                           showCameraLensControl: false,
                           autoCapture: true,
-                          onCapture: (file) => uploadImage(file),
+                          onCapture: (file) {
+                            context
+                                .read<LocationBloc>()
+                                .add(OnGetCurrentLocation());
+                            uploadImage(file);
+                          },
                         ),
                       ),
                     if (state is SuccessIMS)
@@ -102,7 +115,7 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
                         );
                       }),
                     const SizedBox(height: 12),
-                    if (state is SuccessIMS)
+                    if (state is SuccessIMS && attendingState != LoadingATNS())
                       Column(
                         children: [
                           SecondaryButton(
@@ -152,13 +165,14 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
   Future<void> uploadAttendance() async {
     final authState = context.read<AuthBloc>().state as SuccessAS;
     final imageBloc = context.read<ImageBloc>().state as SuccessIMS;
+    final locationState = context.read<LocationBloc>().state.position;
     final imageUrl = imageBloc.imageLink;
     final AttendanceBody body = AttendanceBody(
         userId: authState.credentials?.userId ?? 0,
         companyId: authState.credentials?.companyId ?? 0,
         imageUrl: imageUrl,
-        longitude: '1231231312',
-        latitude: '12312312312',
+        longitude: locationState!.longitude.toString(),
+        latitude: locationState.latitude.toString(),
         status: 'attended',
         reason: 'none');
     context.read<AttendingBloc>().add(OnAttendUser(body));

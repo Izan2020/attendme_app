@@ -6,6 +6,8 @@ import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_event.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,6 +20,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
