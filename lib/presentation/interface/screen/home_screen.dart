@@ -142,7 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // You can access attendanceId with state.attendanceId
                                 break;
                               case AbsentRequestATS():
-                                // Handle the AbsentRequestATS state
+                                AppSnackbar.warning(
+                                    context: context,
+                                    text: "Absent On-Request!");
                                 break;
                               case CheckedoutATS():
                                 AppSnackbar.success(
