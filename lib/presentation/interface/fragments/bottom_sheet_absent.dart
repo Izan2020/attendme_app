@@ -1,4 +1,3 @@
-import 'package:attendme_app/common/snackbars.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
@@ -31,7 +30,7 @@ class _BottomSheetAbsentState extends State<BottomSheetAbsent> {
     return BlocConsumer<AttendingBloc, AttendingState>(
       listener: (context, state) {
         if (state is ErrorATNS) {
-          AppSnackbar.danger(context: context, text: state.message);
+          context.pop();
         } else if (state is SuccessATNS) {
           final dateState = context.read<CalendarBloc>().state;
           context

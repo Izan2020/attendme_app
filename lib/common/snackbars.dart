@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppSnackbar {
   static void danger({required BuildContext context, required String text}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 900),
       content: Text(text),
       backgroundColor: AppColors.danger,
     ));
@@ -14,7 +14,7 @@ class AppSnackbar {
 
   static void success({required BuildContext context, required String text}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 900),
       content: Text(text),
       backgroundColor: AppColors.success,
     ));

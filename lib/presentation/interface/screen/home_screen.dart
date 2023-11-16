@@ -8,7 +8,6 @@ import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart'
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_state.dart';
-
 import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_event.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_state.dart';
@@ -19,7 +18,6 @@ import 'package:face_camera/face_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -138,8 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 break;
                               case AbsentedATS():
-                                // Handle the AbsentedATS state
-                                // You can access attendanceId with state.attendanceId
+                                AppSnackbar.warning(
+                                    context: context, text: "You're Absent");
                                 break;
                               case AbsentRequestATS():
                                 AppSnackbar.warning(

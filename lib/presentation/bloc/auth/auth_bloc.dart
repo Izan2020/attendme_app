@@ -18,7 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // Check Authentication from Usecase
     on<OnCheckAuth>((event, emit) async {
       // A little bit of delay
-      await Future.delayed(const Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 850));
       final result = await checkAuth.execute();
       switch (result) {
         case true:

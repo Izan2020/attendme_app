@@ -39,7 +39,7 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
     return BlocConsumer<AttendingBloc, AttendingState>(
       listener: (context, state) {
         if (state is ErrorATNS) {
-          AppSnackbar.danger(context: context, text: state.message);
+          context.pop();
         } else if (state is SuccessATNS) {
           final dateState = context.read<CalendarBloc>().state;
           context
@@ -58,6 +58,7 @@ class _BottomSheetCheckinState extends State<BottomSheetCheckin> {
                   AppSnackbar.danger(
                       context: context,
                       text: 'Unable to Upload Picture ${state.message}');
+                  context.pop();
                 }
               },
               builder: (context, state) {

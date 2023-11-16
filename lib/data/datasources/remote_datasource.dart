@@ -68,6 +68,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final request = await supabase.get(
           'attendance?select=*&created_at=eq.$date&company_id=eq.${check.companyId}&user_id=eq.${check.userId}');
 
+      debugPrint('Get Attendance Responses Status ${request.statusCode}');
       if (request.statusCode == 200) {
         final dayWeeknd = simpleDateTime(value: check.date!, format: 'E');
         final currentDate = DateTime.now();
