@@ -10,19 +10,19 @@ part 'attendance_model_check_response.g.dart';
 class AttendanceCheckResponse extends Equatable {
   final String? status;
   final String? reason;
-  final String? createdAt;
-  final String? createdTime;
-  final int? attendanceId;
+  final String? created_at;
+  final String? created_time;
+  final int? attendance_id;
   const AttendanceCheckResponse(
       {this.status,
-      this.createdAt,
+      this.created_at,
       this.reason,
-      this.attendanceId,
-      this.createdTime});
+      this.attendance_id,
+      this.created_time});
 
   AttendanceStatus toEntity() {
     return AttendanceStatus(
-        status, createdAt, attendanceId, reason, createdTime);
+        status, created_at, attendance_id, reason, created_time);
   }
 
   factory AttendanceCheckResponse.fromJson(Map<String, dynamic> json) =>
@@ -33,8 +33,8 @@ class AttendanceCheckResponse extends Equatable {
   @override
   List<Object?> get props => [
         status,
-        createdAt,
+        created_at,
         reason,
-        attendanceId,
+        attendance_id,
       ];
 }

@@ -14,16 +14,16 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       json['job_desk'] as String,
       json['image_url'] as String,
       json['email'] as String,
-      json['company_id'] as int,
+      json['companyId'] as int,
     );
 
 Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'id': instance.id,
       'surname': instance.surname,
-      'last_name': instance.lastName,
+      'last_name': instance.last_name,
       'role': instance.role,
-      'job_desk': instance.jobDesk,
-      'image_url': instance.imageUrl,
+      'job_desk': instance.job_desk,
+      'image_url': instance.image_url,
       'email': instance.email,
-      'company_id': instance.companyId,
+      'companyId': instance.companyId,
     };

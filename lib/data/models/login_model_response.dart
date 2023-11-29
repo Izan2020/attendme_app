@@ -9,24 +9,24 @@ part 'login_model_response.g.dart';
 class LoginData {
   final int id;
   final String surname;
-  final String lastName;
+  final String last_name;
   final String role;
-  final String jobDesk;
-  final String imageUrl;
+  final String job_desk;
+  final String image_url;
   final String email;
   final int companyId;
-  LoginData(this.id, this.surname, this.lastName, this.role, this.jobDesk,
-      this.imageUrl, this.email, this.companyId);
+  LoginData(this.id, this.surname, this.last_name, this.role, this.job_desk,
+      this.image_url, this.email, this.companyId);
 
   User toEntity() {
     return User(
         userId: id,
         companyId: companyId,
-        jobDesk: jobDesk,
+        jobDesk: job_desk,
         role: role,
         surName: surname,
-        lastName: lastName,
-        imageUrl: imageUrl);
+        lastName: last_name,
+        imageUrl: image_url);
   }
 
   factory LoginData.fromJson(Map<String, dynamic> json) =>

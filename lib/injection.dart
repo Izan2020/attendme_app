@@ -6,12 +6,14 @@ import 'package:attendme_app/domain/repository/repository.dart';
 import 'package:attendme_app/domain/usecases/check_auth.dart';
 import 'package:attendme_app/domain/usecases/check_out_user.dart';
 import 'package:attendme_app/domain/usecases/get_attendance_status.dart';
+import 'package:attendme_app/domain/usecases/get_attended_users.dart';
 import 'package:attendme_app/domain/usecases/get_login_credentials.dart';
 import 'package:attendme_app/domain/usecases/insert_attendance.dart';
 import 'package:attendme_app/domain/usecases/login_user.dart';
 import 'package:attendme_app/domain/usecases/set_loggedout.dart';
 import 'package:attendme_app/domain/usecases/upload_image.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attended_user/attended_user_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/image/image_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
@@ -51,6 +53,7 @@ Future<void> initializeDependencies() async {
   inject.registerLazySingleton(() => AttendUser(inject()));
   inject.registerLazySingleton(() => CheckoutUser(inject()));
   inject.registerLazySingleton(() => UploadImageImgur(inject()));
+  inject.registerLazySingleton(() => GetAttendedUsers(inject()));
 
   // Blocs
   // RegisterFactory is good for Blocs
@@ -81,6 +84,12 @@ Future<void> initializeDependencies() async {
   );
   inject.registerFactory(
     () => LocationBloc(),
+  );
+  inject.registerFactory(
+    () => AttendedUserBloc(
+      getAttendedUsers: inject(),
+      getLoginCredentials: inject(),
+    ),
   );
 
   // Client

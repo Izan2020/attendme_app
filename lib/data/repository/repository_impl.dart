@@ -6,6 +6,7 @@ import 'package:attendme_app/common/strings.dart';
 import 'package:attendme_app/data/datasources/remote_datasource.dart';
 
 import 'package:attendme_app/data/models/login_model_response.dart';
+import 'package:attendme_app/domain/entities/attended_user.dart';
 import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/attendance_status.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
@@ -103,6 +104,19 @@ class RepositoryImpl implements Repository {
     try {
       final result = await remoteDataSource.uploadImageImgur(body);
       return Right(result ?? "");
+    } on ServerException catch (e) {
+      return Left(ServerFailure('Server Failure ${e.message}'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserAttended>> getAttendedUser(
+      CheckAttendanceParams check) async {
+    try {
+      final result = await remoteDataSource.getAttendedUser(check);
+      return Right(result!.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure('Server Failure ${e.message}'));
     } on SocketException {

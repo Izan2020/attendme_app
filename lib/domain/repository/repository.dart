@@ -1,4 +1,5 @@
 import 'package:attendme_app/common/failure.dart';
+import 'package:attendme_app/domain/entities/attended_user.dart';
 import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/attendance_status.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
@@ -20,4 +21,6 @@ abstract class Repository {
   Future<Either<Failure, bool>> checkOutUser(int attendanceId);
   Future<Either<Failure, bool>> attendUser(AttendanceBody body);
   Future<Either<Failure, String>> uploadImage(UploadImage body);
+  Future<Either<Failure, UserAttended>> getAttendedUser(
+      CheckAttendanceParams check);
 }

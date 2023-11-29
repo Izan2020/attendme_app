@@ -6,6 +6,7 @@ import 'package:attendme_app/common/imgur.dart';
 import 'package:attendme_app/common/supabase.dart';
 import 'package:attendme_app/common/timestamp.dart';
 import 'package:attendme_app/data/models/attendance_model_check_response.dart';
+import 'package:attendme_app/data/models/attended_user_list_response.dart';
 import 'package:attendme_app/data/models/login_model_response.dart';
 import 'package:attendme_app/domain/entities/check_attendance_params.dart';
 import 'package:attendme_app/domain/entities/insert_attendance_body.dart';
@@ -19,8 +20,8 @@ abstract class RemoteDataSource {
   Future<AttendanceCheckResponse?> getAttendance(CheckAttendanceParams check);
   Future<bool> updateCheckOut(int attendanceId);
   Future<bool> insertAttendance(AttendanceBody body);
-
   Future<String?> uploadImageImgur(UploadImage body);
+  Future<AttendedUserList?> getAttendedUser(CheckAttendanceParams check);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -177,10 +178,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     });
     try {
       final response = await imgur.uploadImage(formData: formData);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         Map<String, dynamic> data = response.data['data'];
         String link = data['link'];
         return link;
+      }
+    } on DioException catch (e) {
+      if (e.error is SocketException) {
+        throw const SocketException('N/A');
+      }
+      if (e.response?.statusCode != 200 || e.response?.statusCode != 201) {
+        throw ServerException('${e.response?.statusCode}');
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future<AttendedUserList?> getAttendedUser(CheckAttendanceParams check) async {
+    try {
+      final response = await supabase.get(
+          'attendance?select=id,created_at,user(id,surname,last_name,image_url)&created_at=eq.${check.date}&company_id=eq.${check.companyId}&status=eq.attended');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return AttendedUserList.fromJson(response.data);
       }
     } on DioException catch (e) {
       if (e.error is SocketException) {
