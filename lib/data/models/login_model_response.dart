@@ -14,14 +14,14 @@ class LoginData {
   final String job_desk;
   final String image_url;
   final String email;
-  final int companyId;
+  final int company_id;
   LoginData(this.id, this.surname, this.last_name, this.role, this.job_desk,
-      this.image_url, this.email, this.companyId);
+      this.image_url, this.email, this.company_id);
 
   User toEntity() {
     return User(
         userId: id,
-        companyId: companyId,
+        companyId: company_id,
         jobDesk: job_desk,
         role: role,
         surName: surname,

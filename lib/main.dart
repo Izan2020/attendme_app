@@ -1,11 +1,13 @@
 import 'package:attendme_app/injection.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attended_user/attended_user_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/image/image_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:attendme_app/presentation/bloc/location/location_bloc.dart';
 import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
+import 'package:attendme_app/presentation/interface/screen/attendance/attended_user_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
@@ -56,6 +58,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<LocationBloc>(
           create: (_) => di.inject<LocationBloc>(),
         ),
+        BlocProvider<AttendedUserBloc>(
+          create: (_) => di.inject<AttendedUserBloc>(),
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -80,6 +85,11 @@ class MyApp extends StatelessWidget {
             GoRoute(
               path: SettingsScreen.routePath,
               builder: (context, state) => const SettingsScreen(),
+            ),
+            // Attended User Screen
+            GoRoute(
+              path: AttendedUserScreen.routePath,
+              builder: (context, state) => const AttendedUserScreen(),
             ),
           ],
         ),

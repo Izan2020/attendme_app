@@ -13,6 +13,56 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 
+class AdminCards extends StatelessWidget {
+  final String title;
+  final String subTitle;
+  final Function onTap;
+  const AdminCards({
+    super.key,
+    required this.title,
+    required this.subTitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => onTap(),
+        child: Container(
+          height: 88,
+          padding: const EdgeInsets.only(left: 18, bottom: 12),
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(13))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 38,
+                  height: 1.3,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                subTitle,
+                style: const TextStyle(
+                    fontSize: 19,
+                    height: 0.3,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class TopBarHome extends StatelessWidget {
   final Function onTapSettings;
   final Function onTapProfile;
@@ -45,7 +95,10 @@ class TopBarHome extends StatelessWidget {
                             width: 47,
                             fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) {
-                              return const Text('');
+                              return Icon(
+                                Icons.wifi_off_outlined,
+                                color: AppColors.danger,
+                              );
                             },
                           ),
                         ),

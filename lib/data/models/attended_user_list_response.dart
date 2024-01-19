@@ -9,7 +9,7 @@ class AttendedUserList {
   final List<AttendedUser> data;
   AttendedUserList(this.data);
 
-  factory AttendedUserList.fromJson(Map<String, dynamic> json) =>
+  factory AttendedUserList.fromJson(List<dynamic> json) =>
       _$AttendedUserListFromJson(json);
 
   Map<String, dynamic> toJson() => _$AttendedUserListToJson(this);

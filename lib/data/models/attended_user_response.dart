@@ -7,8 +7,8 @@ part 'attended_user_response.g.dart';
 class AttendedUser {
   final int id;
   final String created_at;
-  final UserData userData;
-  AttendedUser(this.id, this.created_at, this.userData);
+  final UserData user;
+  AttendedUser(this.id, this.created_at, this.user);
 
   factory AttendedUser.fromJson(Map<String, dynamic> json) =>
       _$AttendedUserFromJson(json);

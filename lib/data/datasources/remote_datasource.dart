@@ -200,6 +200,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       final response = await supabase.get(
           'attendance?select=id,created_at,user(id,surname,last_name,image_url)&created_at=eq.${check.date}&company_id=eq.${check.companyId}&status=eq.attended');
       if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint(response.data.toString());
         return AttendedUserList.fromJson(response.data);
       }
     } on DioException catch (e) {

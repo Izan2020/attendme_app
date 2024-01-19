@@ -5,6 +5,8 @@ import 'package:attendme_app/common/snackbars.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attendance_state.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attended_user/attended_user_bloc.dart';
+import 'package:attendme_app/presentation/bloc/attendance/attended_user/attended_user_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_bloc.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_event.dart';
 import 'package:attendme_app/presentation/bloc/attendance/attending/attending_state.dart';
@@ -12,6 +14,7 @@ import 'package:attendme_app/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_event.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_state.dart';
 import 'package:attendme_app/presentation/interface/fragments/bottom_sheet_attend.dart';
+import 'package:attendme_app/presentation/interface/screen/attendance/attended_user_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
 import 'package:face_camera/face_camera.dart';
@@ -34,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     FaceCamera.initialize();
     getTodaysAttendance();
-
     super.initState();
   }
 
@@ -168,26 +170,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
-                            Expanded(
-                              child: Container(
-                                height: 88,
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(13))),
-                              ),
+                            AdminCards(
+                              title: '42',
+                              subTitle: 'Attended',
+                              onTap: () =>
+                                  context.push(AttendedUserScreen.routePath),
                             ),
                             const SizedBox(
                               width: 8,
                             ),
-                            Expanded(
-                              child: Container(
-                                height: 88,
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(13))),
-                              ),
+                            AdminCards(
+                              title: '12',
+                              subTitle: 'Absent',
+                              onTap: () {},
                             ),
                           ],
                         ),
@@ -196,26 +191,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Row(
                           children: [
-                            Expanded(
-                              child: Container(
-                                height: 88,
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(13))),
-                              ),
+                            AdminCards(
+                              title: '11',
+                              subTitle: 'Requests',
+                              onTap: () {},
                             ),
                             const SizedBox(
                               width: 8,
                             ),
-                            Expanded(
-                              child: Container(
-                                height: 88,
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(13))),
-                              ),
+                            AdminCards(
+                              title: '52',
+                              subTitle: 'Employees',
+                              onTap: () {},
                             ),
                           ],
                         )
@@ -233,8 +220,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> getTodaysAttendance() async {
     final dateState = context.read<CalendarBloc>().state.date;
-    return Future.microtask(() =>
-        context.read<AttendanceBloc>().add(OnGetAttendanceStatus(dateState)));
+
+    return Future.microtask(() {
+      context.read<AttendanceBloc>().add(OnGetAttendanceStatus(dateState));
+      context.read<AttendedUserBloc>().add(OnFetchAttendedUser(dateState));
+    });
   }
 
   Future<void> getAttendanceByCalendar(DateTime date) async {

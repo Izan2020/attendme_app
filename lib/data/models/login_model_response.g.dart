@@ -14,7 +14,7 @@ LoginData _$LoginDataFromJson(Map<String, dynamic> json) => LoginData(
       json['job_desk'] as String,
       json['image_url'] as String,
       json['email'] as String,
-      json['companyId'] as int,
+      json['company_id'] as int,
     );
 
 Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
@@ -25,5 +25,5 @@ Map<String, dynamic> _$LoginDataToJson(LoginData instance) => <String, dynamic>{
       'job_desk': instance.job_desk,
       'image_url': instance.image_url,
       'email': instance.email,
-      'companyId': instance.companyId,
+      'company_id': instance.company_id,
     };

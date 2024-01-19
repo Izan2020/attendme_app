@@ -6,9 +6,9 @@ part of 'attended_user_list_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AttendedUserList _$AttendedUserListFromJson(Map<String, dynamic> json) =>
+AttendedUserList _$AttendedUserListFromJson(List<dynamic> json) =>
     AttendedUserList(
-      (json['data'] as List<dynamic>)
+      (json)
           .map((e) => AttendedUser.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
