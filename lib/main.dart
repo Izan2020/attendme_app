@@ -10,6 +10,7 @@ import 'package:attendme_app/presentation/bloc/login/login_bloc.dart';
 import 'package:attendme_app/presentation/interface/screen/attendance/attended_user_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/home_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/auth/login_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/profile_setting_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
 import 'package:flutter/services.dart';
 
@@ -90,6 +91,10 @@ class MyApp extends StatelessWidget {
             GoRoute(
               path: AttendedUserScreen.routePath,
               builder: (context, state) => const AttendedUserScreen(),
+            ),
+            GoRoute(
+              path: ProfileSettingScreen.routePath,
+              builder: (context, state) => const ProfileSettingScreen(),
             ),
           ],
         ),

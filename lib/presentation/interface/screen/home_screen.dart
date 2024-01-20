@@ -15,6 +15,7 @@ import 'package:attendme_app/presentation/bloc/calendar/calendar_event.dart';
 import 'package:attendme_app/presentation/bloc/calendar/calendar_state.dart';
 import 'package:attendme_app/presentation/interface/fragments/bottom_sheet_attend.dart';
 import 'package:attendme_app/presentation/interface/screen/attendance/attended_user_screen.dart';
+import 'package:attendme_app/presentation/interface/screen/profile_setting_screen.dart';
 import 'package:attendme_app/presentation/interface/screen/settings_screen.dart';
 import 'package:attendme_app/presentation/interface/widgets/home_screen_widgets.dart';
 import 'package:face_camera/face_camera.dart';
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // Top Appbar
             TopBarHome(
               onTapSettings: () => context.push(SettingsScreen.routePath),
-              onTapProfile: () {},
+              onTapProfile: () => context.push(ProfileSettingScreen.routePath),
             ),
             const SizedBox(height: 8),
             // Content Divider
