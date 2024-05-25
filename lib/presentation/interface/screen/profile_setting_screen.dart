@@ -1,6 +1,8 @@
 import 'package:attendme_app/common/colors.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_bloc.dart';
 import 'package:attendme_app/presentation/bloc/auth/auth_state.dart';
+import 'package:attendme_app/presentation/interface/widgets/buttons.dart';
+import 'package:attendme_app/presentation/interface/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +15,8 @@ class ProfileSettingScreen extends StatefulWidget {
 }
 
 class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +62,28 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(38),
                             child: Image.network(state.credentials!.imageUrl!)),
+                      ),
+                    ),
+                    Container(height: 22),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        children: [
+                          AppTextField(
+                            textHint: 'Name',
+                            controller: nameController,
+                          ),
+                          Container(height: 12),
+                          AppTextField(
+                            textHint: 'Email',
+                            controller: emailController,
+                          ),
+                          Container(height: 22),
+                          SecondaryButton(
+                              title: 'Reset Password', onTap: () {}),
+                          Container(height: 12),
+                          PrimaryButton(title: 'Save ', onTap: () {}),
+                        ],
                       ),
                     )
                   ],

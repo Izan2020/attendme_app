@@ -6,10 +6,10 @@ PODS:
   - Flutter (1.0.0)
   - geolocator_apple (1.2.0):
     - Flutter
-  - google_mlkit_commons (0.3.0):
+  - google_mlkit_commons (0.6.1):
     - Flutter
     - MLKitVision
-  - google_mlkit_face_detection (0.6.0):
+  - google_mlkit_face_detection (0.9.0):
     - Flutter
     - google_mlkit_commons
     - GoogleMLKit/FaceDetection (~> 4.0.0)
@@ -112,12 +112,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
-  camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
+  camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
   face_camera: 9473f8c80e20d67bd2d946ed573ccee168d31186
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
-  google_mlkit_commons: a4f893c1b9708fc697b2194728013a1ed0f50b6b
-  google_mlkit_face_detection: 6b9965dd7f972bcb52dc8a9a7ba41d0b06de8d3b
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  geolocator_apple: 6cbaf322953988e009e5ecb481f07efece75c450
+  google_mlkit_commons: 3857c1e9f23ca02073f8dd34a7a3580feb814cef
+  google_mlkit_face_detection: 52f7e4c15a7c49b98940fa32af4c2b10fd8608fc
   GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
   GoogleMLKit: 2bd0dc6253c4d4f227aad460f69215a504b2980e
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
@@ -130,8 +130,8 @@ SPEC CHECKSUMS:
   MLKitVision: 8baa5f46ee3352614169b85250574fde38c36f49
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
 
-PODFILE CHECKSUM: af092e272a651dc778fdc16ad59ee3dc5bf43485
+PODFILE CHECKSUM: 13146e6b323de63ad0df343f3262513118ae6f1b
 
 COCOAPODS: 1.13.0
