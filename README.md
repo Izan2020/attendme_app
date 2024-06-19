@@ -1,16 +1,27 @@
-# attendme_app
+![foto](https://i.imgur.com/SloxIhB.png)
 
-A new Flutter project.
+[![Technologies](https://skillicons.dev/icons?i=supabase,flutter)](https://skillicons.dev)
 
-## Getting Started
+# AttendMe App
+AttendMe is a cutting-edge mobile attendance application designed to streamline and simplify attendance tracking for educational institutions, businesses, and organizations of all sizes. Built with Flutter, AttendMe offers a seamless and intuitive user experience across both iOS and Android devices. By leveraging the robust capabilities of Supabase as its data server, AttendMe ensures real-time synchronization and secure data management.
 
-This project is a starting point for a Flutter application.
+## Application Implementation
 
-A few resources to get you started if this is your first Flutter project:
+### 📷 Snapshots
+![foto](https://cdn.discordapp.com/attachments/1110006269571514438/1253087923826589806/image.png?ex=66749492&is=66734312&hm=ceaa02cb410546618d7d93ef1131709c0673684357240aeab7a7ccd49b235d1c&)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 😎 Application Features
+∙ Daily Attendance Detection <br>
+∙ Current Location where you've Checked-In and Checked-Out<br>
+∙ Send Pictures when you're Checking-In.
+∙ Upcoming features soon!
+
+### 📦 Database - Using the Supabase API
+∙ To store Attendance Pictures and Profile Pictures I use **Imgur API** <br>
+∙ Daily Attendance Data Detection uses the ``"date eq.now()"`` query on Params <br>
+∙ The database also stores where user **Checked-Out** and **Checked-In** Location by **Longtitude** and **Latitude**
+
+
+
+
