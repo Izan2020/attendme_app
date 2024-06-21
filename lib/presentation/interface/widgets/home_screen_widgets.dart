@@ -96,8 +96,8 @@ class TopBarHome extends StatelessWidget {
                             fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) {
                               return Icon(
-                                Icons.wifi_off_outlined,
-                                color: AppColors.danger,
+                                Icons.person,
+                                color: AppColors.primaryColor,
                               );
                             },
                           ),

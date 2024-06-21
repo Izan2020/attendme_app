@@ -45,13 +45,13 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                 return Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 32),
+                      padding: const EdgeInsets.only(top: 32),
                       child: Container(
                         width: 120,
                         height: 120,
                         decoration: BoxDecoration(
                             color: Colors.grey,
-                            borderRadius: BorderRadius.all(Radius.circular(38)),
+                            borderRadius: const BorderRadius.all(Radius.circular(38)),
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 8,
