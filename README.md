@@ -8,7 +8,7 @@ AttendMe is a cutting-edge mobile attendance application designed to streamline 
 ## Application Implementation
 
 ### 📷 Snapshots
-![foto](https://cdn.discordapp.com/attachments/1110006269571514438/1253087923826589806/image.png?ex=66749492&is=66734312&hm=ceaa02cb410546618d7d93ef1131709c0673684357240aeab7a7ccd49b235d1c&)
+![foto](https://media.discordapp.net/attachments/1110006269571514438/1253087923826589806/image.png?ex=668da112&is=668c4f92&hm=7ba3d955f2f65c1ed82e4435c72ec38aa9aa978d1f44685b7d73000515c03439&=&format=webp&quality=lossless&width=2006&height=1254)
 
 
 ### 😎 Application Features
